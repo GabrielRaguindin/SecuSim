@@ -8,7 +8,7 @@ const page = () => {
   return (
     <div>
 
-      <div className='text-center text-3xl font-bold text-stone-600 py-5'> Potacca </div>
+      <div className='text-center text-3xl font-bold text-stone-600 py-5'> Welcome to SecuSim </div>
 
       <div className='flex justify-evenly'>
         <Card className='w-[45%] shadow-xl' imgAlt='random image' imgSrc='/Topology.jpg'>
