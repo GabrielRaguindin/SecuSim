@@ -58,41 +58,47 @@ const page = () => {
     <div>
       <div className='text-center text-3xl font-bold text-stone-600 py-5'> Policy Templates </div>
 
-      <div className='flex justify-around'>
-        <Card className='w-[32%] shadow-xl'>
+      <div className='flex flex-col justify-center p-5 gap-5'>
+        <Card className='w-[100%] shadow-xl'>
           <SiOpenaccess className='text-6xl text-stone-600' />
           <h5 className='text-2xl font-medium text-stone-600'> Access Control Policy </h5>
           <p className='text-stone-600'>
-            Access control policies function by authenticating user credentials,
-            proving their identity, and allowing the pre-approved permissions. </p>
+          Access control policy function by authenticating user credentials, proving their identity, 
+          and allowing the pre-approved permissions associated with their username and IP address. </p>
 
-          <Button gradientMonochrome='teal'
-            className='shadow-md transform hover:scale-105 active:scale-100 transition duration-300'
-            onClick={() => setOpenModalAccess(true)}> View Details </Button>
+          <div className='flex justify-end'>
+            <Button gradientMonochrome='teal'
+              className='flex w-[30%] shadow-md transform hover:scale-105 active:scale-100 transition duration-300'
+              onClick={() => setOpenModalAccess(true)}> View Details </Button>
+          </div>
         </Card>
 
-        <Card className='w-[32%] shadow-xl'>
+        <Card className='w-[100%] shadow-xl'>
           <TbCloudDataConnection className='text-6xl text-stone-600' />
           <h5 className='text-2xl font-medium text-stone-600'> Quality of Service Policy </h5>
           <p className='text-stone-600'>
-            Quality of service policy is the use of mechanisms
-            to control traffic and ensure the performance of critical applications. </p>
+            Quality of service policy is the use of mechanisms or technologies that work on a network 
+            to control traffic and ensure the performance of critical applications with limited network capacity. </p>
 
-          <Button gradientMonochrome='teal'
-            className='shadow-md transform hover:scale-105 active:scale-100 transition duration-300'
-            onClick={() => setOpenModalQuality(true)}> View Details </Button>
+          <div className='flex justify-end'>
+            <Button gradientMonochrome='teal'
+              className='flex w-[30%] shadow-md transform hover:scale-105 active:scale-100 transition duration-300'
+              onClick={() => setOpenModalQuality(true)}> View Details </Button>
+          </div>
         </Card>
 
-        <Card className='w-[32%] shadow-xl'>
+        <Card className='w-[100%] shadow-xl'>
           <RiFireLine className='text-6xl text-stone-600' />
           <h5 className='text-2xl font-medium text-stone-600'> Firewall Policy </h5>
           <p className='text-stone-600'>
-            A firewall policy is a set of rules and standards designed to control network traffic
-            between an organization's internal network and the internet. </p>
+            Firewall policy is a set of rules and standards designed to control network traffic
+            between an organization's internal network and the internet. It helps to guard against potential security threats. </p>
 
-          <Button gradientMonochrome='teal'
-            className='shadow-md transform hover:scale-105 active:scale-100 transition duration-300'
-            onClick={() => setOpenModalFirewall(true)}> View Details </Button>
+          <div className='flex justify-end'>
+            <Button gradientMonochrome='teal'
+              className='flex w-[30%] shadow-md transform hover:scale-105 active:scale-100 transition duration-300'
+              onClick={() => setOpenModalFirewall(true)}> View Details </Button>
+          </div>
         </Card>
       </div>
 
@@ -100,8 +106,8 @@ const page = () => {
       <Modal show={openModalAccess} onClose={() => setOpenModalAccess(false)}>
         <Modal.Header className='bg-gradient-to-r from-teal-400 from-10% to-teal-700 to-90%'>Access Control Policy</Modal.Header>
         <Modal.Body>
-          <p className='text-stone-600 mb-3'>Access control policies function by authenticating user credentials,
-            proving their identity, and allowing the pre-approved permissions.</p>
+          <p className='text-stone-600 mb-3'>Considered a key component in a security plan, access control policies 
+            refer to rules or policies that limit unauthorized physical or logical access to sensitive data.</p>
 
           <h3 className='text-stone-600 font-bold mb-3'> Controls </h3>
           <div className="space-y-3 ml-5">
@@ -142,8 +148,8 @@ const page = () => {
       <Modal show={openModalQuality} onClose={() => setOpenModalQuality(false)}>
         <Modal.Header className='bg-gradient-to-r from-teal-400 from-10% to-teal-700 to-90%'>Quality of Service Policy</Modal.Header>
         <Modal.Body>
-          <p className='text-stone-600 mb-3'> Quality of service policy is the use of mechanisms
-            to control traffic and ensure the performance of critical applications. </p>
+          <p className='text-stone-600 mb-3'> QoS is typically applied to networks that carry traffic for resource-intensive systems. 
+            Common services for which it is required include data transmission, online gaming, streaming media, and Voice over IP. </p>
 
           <h3 className='text-stone-600 font-bold mb-3'> Controls </h3>
           <div className="space-y-3 ml-5">
@@ -184,8 +190,8 @@ const page = () => {
       <Modal show={openModalFirewall} onClose={() => setOpenModalFirewall(false)}>
         <Modal.Header className='bg-gradient-to-r from-teal-400 from-10% to-teal-700 to-90%'>Firewall Policy</Modal.Header>
         <Modal.Body>
-          <p className='text-stone-600 mb-3'> A firewall policy is a set of rules and standards designed to control network traffic
-            between an organization's internal network and the internet. </p>
+          <p className='text-stone-600 mb-3'> Firewalls are typically used to gate the borders of a private network or its host devices. 
+            As such, firewalls are one security tool in the broader category of user access control. </p>
 
           <h3 className='text-stone-600 font-bold mb-3'> Controls </h3>
           <div className="space-y-3 ml-5">
