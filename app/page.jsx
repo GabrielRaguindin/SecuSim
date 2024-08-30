@@ -1,6 +1,3 @@
-"use client"
-
-import React from 'react'
 import Link from 'next/link'
 import { Card, Button, Popover } from 'flowbite-react'
 
@@ -14,15 +11,15 @@ const page = () => {
         <Card className='w-[45%] shadow-xl' imgAlt='random image' imgSrc='/Topology.jpg'>
           <h5 className='text-2xl font-medium text-stone-600'> Topology Builder </h5>
           <p className='text-stone-600'> Start creating your Network Topology Architecture </p>
-          <Button gradientMonochrome='teal' 
-                  className='shadow-md transform hover:scale-105 active:scale-100 transition duration-300'
-                  as={Link} href='topologies'>
+          <Button gradientMonochrome='teal'
+            className='shadow-md transform hover:scale-105 active:scale-100 transition duration-300'
+            as={Link} href='topologies'>
             Start Building </Button>
         </Card>
 
         <Card className='w-[45%] shadow-xl' imgAlt='random image' imgSrc='/Simulation.jpg'>
           <h5 className='text-2xl font-medium text-stone-600'> Simulation Room </h5>
-          <p className='text-stone-600'> Enter the Simulation Room with SecuSim's pinnacle feature </p>
+          <p className='text-stone-600'> Enter the Simulation Room with SecuSim&apos;s pinnacle feature </p>
           <div className='flex justify-evenly gap-5'>
             <Popover
               content={
@@ -35,7 +32,7 @@ const page = () => {
                       into a Network Topology architecture.
                     </p>
                     <p> In this Simulation Room, you can deploy the policies into
-                      a device in a topology to test it's effectiveness. </p>
+                      a device in a topology to test it&apos;s effectiveness. </p>
                   </div>
                 </div>
               }
@@ -44,9 +41,9 @@ const page = () => {
                       transform hover:scale-105 active:scale-100 transition duration-300'>
                 What does this do? </Button>
             </Popover>
-            <Button gradientMonochrome='teal' 
-                    className='w-[47%] shadow-md transform hover:scale-105 active:scale-100 transition duration-300'
-                    as={Link} href='/simulation'>
+            <Button gradientMonochrome='teal'
+              className='w-[47%] shadow-md transform hover:scale-105 active:scale-100 transition duration-300'
+              as={Link} href='/simulation'>
               Simulate </Button>
           </div>
         </Card>

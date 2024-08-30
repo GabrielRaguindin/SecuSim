@@ -7,7 +7,6 @@ const DrawerContextProvider = ({ children }) => {
     const [open, setOpen] = useState(false);
 
     const toggle = () => {
-        console.log({ open })
         setOpen((prev) => !prev)
     };
 
