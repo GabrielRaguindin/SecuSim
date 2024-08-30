@@ -17,7 +17,7 @@ const Drawerbar = ({ children }) => {
   const { open } = useContext(DrawerContext);
 
   return (
-    <div className='bg-stone-100 min-h-screen'>
+    <div className='bg-stone-100 min-h-screen font-montserrat'>
       <Headbar />
       <div className='lg:flex'>
         {/* Sidebar for larger screens */}

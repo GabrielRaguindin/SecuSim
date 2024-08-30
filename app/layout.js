@@ -1,6 +1,13 @@
 import "./globals.css";
+import { Montserrat } from 'next/font/google';
 import Drawerbar from "@/components/Drawerbar";
 import DrawerContextProvider from "@/context/DwrContext";
+
+const montserrat_init = Montserrat ({
+  subsets: ['latin'],
+  weight: ['100', '300', '500'],
+  variable: '--font-montserrat',
+})
 
 export const metadata = {
   title: "SecuSim",
@@ -10,7 +17,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>
+      <body className={montserrat_init.variable}>
         <DrawerContextProvider>
           <Drawerbar> {children} </Drawerbar>
         </DrawerContextProvider>

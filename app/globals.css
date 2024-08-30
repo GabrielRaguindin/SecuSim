@@ -26,6 +26,10 @@ body {
     rgb(var(--background-start-rgb));
 }
 
+.font-montserrat{
+  font-family: var(--font-montserrat);
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;

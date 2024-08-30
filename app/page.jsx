@@ -3,7 +3,7 @@ import { Card, Button, Popover } from 'flowbite-react'
 
 const page = () => {
   return (
-    <div>
+    <div className='font-montserrat'>
 
       <div className='text-center text-3xl font-bold text-stone-600 py-5'> Welcome to SecuSim </div>
 
@@ -21,7 +21,7 @@ const page = () => {
         <Card className='w-[45%] shadow-xl'>
           <img src="/Simulation.jpg" alt="random image" className='rounded' />
           <h5 className='text-2xl font-medium text-stone-600'> Simulation Room </h5>
-          <p className='text-stone-600'> Enter the Simulation Room with SecuSim&apos;s pinnacle feature </p>
+          <p className='text-stone-600'> The SecuSim&apos;s pinnacle feature </p>
           <div className='flex justify-evenly gap-5'>
             <Popover
               content={

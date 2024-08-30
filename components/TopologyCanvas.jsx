@@ -141,7 +141,7 @@ const TopologyCanvas = () => {
     };
 
     return (
-        <div className="p-4">
+        <div className="p-4 font-montserrat">
             <div className="flex items-center mb-4">
                 <div className="flex space-x-4">
                     <Card
@@ -199,7 +199,7 @@ const TopologyCanvas = () => {
                 </div>
             </div>
             
-            <Modal size='md' show={showModal} onClose={() => setShowModal(false)} popup>
+            <Modal className='font-montserrat' size='md' show={showModal} onClose={() => setShowModal(false)} popup>
                 <Modal.Header />
                 <Modal.Body className='text-stone-600'>
                     <div className='text-center'>

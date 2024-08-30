@@ -55,7 +55,7 @@ const page = () => {
 
   return (
 
-    <div>
+    <div className='font-montserrat'>
       <div className='text-center text-3xl font-bold text-stone-600 py-5'> Policy Templates </div>
 
       <div className='flex flex-col justify-center p-5 gap-5'>
@@ -103,7 +103,7 @@ const page = () => {
       </div>
 
       {/* Access Control Policy Modal */}
-      <Modal show={openModalAccess} onClose={() => setOpenModalAccess(false)}>
+      <Modal className='font-montserrat' show={openModalAccess} onClose={() => setOpenModalAccess(false)}>
         <Modal.Header className='bg-gradient-to-r from-teal-400 from-10% to-teal-700 to-90%'>Access Control Policy</Modal.Header>
         <Modal.Body>
           <p className='text-stone-600 mb-3'>Considered a key component in a security plan, access control policies 
@@ -145,7 +145,7 @@ const page = () => {
       </Modal>
 
       {/* Quality of Service Policy Modal */}
-      <Modal show={openModalQuality} onClose={() => setOpenModalQuality(false)}>
+      <Modal className='font-montserrat' show={openModalQuality} onClose={() => setOpenModalQuality(false)}>
         <Modal.Header className='bg-gradient-to-r from-teal-400 from-10% to-teal-700 to-90%'>Quality of Service Policy</Modal.Header>
         <Modal.Body>
           <p className='text-stone-600 mb-3'> QoS is typically applied to networks that carry traffic for resource-intensive systems. 
@@ -187,7 +187,7 @@ const page = () => {
       </Modal>
 
       {/* Firewall Policy Modal */}
-      <Modal show={openModalFirewall} onClose={() => setOpenModalFirewall(false)}>
+      <Modal className='font-montserrat' show={openModalFirewall} onClose={() => setOpenModalFirewall(false)}>
         <Modal.Header className='bg-gradient-to-r from-teal-400 from-10% to-teal-700 to-90%'>Firewall Policy</Modal.Header>
         <Modal.Body>
           <p className='text-stone-600 mb-3'> Firewalls are typically used to gate the borders of a private network or its host devices. 
