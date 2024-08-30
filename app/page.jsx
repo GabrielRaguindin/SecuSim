@@ -8,7 +8,8 @@ const page = () => {
       <div className='text-center text-3xl font-bold text-stone-600 py-5'> Welcome to SecuSim </div>
 
       <div className='flex justify-evenly'>
-        <Card className='w-[45%] shadow-xl' imgAlt='random image' imgSrc='/Topology.jpg'>
+        <Card className='w-[45%] shadow-xl'>
+          <img src="/Topology.jpg" alt="random image" className='rounded' />
           <h5 className='text-2xl font-medium text-stone-600'> Topology Builder </h5>
           <p className='text-stone-600'> Start creating your Network Topology Architecture </p>
           <Button gradientMonochrome='teal'
@@ -17,7 +18,8 @@ const page = () => {
             Start Building </Button>
         </Card>
 
-        <Card className='w-[45%] shadow-xl' imgAlt='random image' imgSrc='/Simulation.jpg'>
+        <Card className='w-[45%] shadow-xl'>
+          <img src="/Simulation.jpg" alt="random image" className='rounded' />
           <h5 className='text-2xl font-medium text-stone-600'> Simulation Room </h5>
           <p className='text-stone-600'> Enter the Simulation Room with SecuSim&apos;s pinnacle feature </p>
           <div className='flex justify-evenly gap-5'>
