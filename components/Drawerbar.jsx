@@ -34,8 +34,8 @@ const Drawerbar = ({ children }) => {
               <li
                 key={index}
                 className="flex justify-start items-center 
-            hover:bg-glass-bg hover:backdrop-blur-md rounded-md p-2 
-            cursor-pointer transition-all duration-300"
+                hover:bg-glass-bg hover:backdrop-blur-md rounded-md p-2 
+                cursor-pointer transition-all duration-300"
               >
                 <span className="mr-4 text-stone-200 text-xl">{item.icon}</span>
                 <Link href={item.link} className="flex-1 text-stone-200">
