@@ -4,16 +4,14 @@ import Link from 'next/link';
 import Headbar from './Headbar';
 
 // Imported Icons
-import { HiHome, HiSearch, HiCubeTransparent, HiChevronRight, HiInformationCircle } from 'react-icons/hi';
-import { PiNetworkFill } from 'react-icons/pi';
-import { MdPolicy } from 'react-icons/md';
-import { IoMdAnalytics } from 'react-icons/io';
+import { HiSearch, HiChevronRight } from 'react-icons/hi';
 
 // Imported UI Components
 import { TextInput } from 'flowbite-react';
 
 // Imported Context
 import { DrawerContext } from '@/context/DwrContext';
+import { drawerData } from './data/drawerData';
 
 const Drawerbar = ({ children }) => {
   const { open } = useContext(DrawerContext);
@@ -32,56 +30,20 @@ const Drawerbar = ({ children }) => {
           <TextInput icon={HiSearch} type="search" placeholder="Search" required size={32} className='py-3'></TextInput>
 
           <ul>
-            <li class='flex justify-start items-center 
+            {drawerData.map((item, index) => (
+              <li
+                key={index}
+                className="flex justify-start items-center 
                 hover:bg-glass-bg hover:backdrop-blur-md rounded-md p-2 
-                cursor-pointer transition-all duration-300'>
-
-              <span class='mr-4 text-stone-200 text-xl'> <HiHome /> </span>
-              <Link href='/' class='flex-1 text-stone-200'>Home</Link>
-            </li>
-
-            <li class='flex justify-start items-center 
-                hover:bg-glass-bg hover:backdrop-blur-md rounded-md p-2 
-                cursor-pointer transition-all duration-300'>
-
-              <span class='mr-4 text-stone-200 text-xl'> <MdPolicy /> </span>
-              <Link href='/policies' class='flex-1 text-stone-200'>Policy Templates</Link>
-              <HiChevronRight class='text-stone-200' />
-            </li>
-
-            <li class='flex justify-start items-center 
-                hover:bg-glass-bg hover:backdrop-blur-md rounded-md p-2 
-                cursor-pointer transition-all duration-300'>
-
-              <span class='mr-4 text-stone-200 text-xl'> <PiNetworkFill /> </span>
-              <Link href='/topologies' class='flex-1 text-stone-200'>Topology Templates</Link>
-              <HiChevronRight class='text-stone-200' />
-            </li>
-
-            <li class='flex justify-start items-center 
-                hover:bg-glass-bg hover:backdrop-blur-md rounded-md p-2 
-                cursor-pointer transition-all duration-300'>
-
-              <span class='mr-4 text-stone-200 text-xl'> <HiCubeTransparent /> </span>
-              <Link href='/' class='flex-1 text-stone-200'>Simulate</Link>
-              <HiChevronRight class='text-stone-200' />
-            </li>
-
-            <li class='flex justify-start items-center 
-                hover:bg-glass-bg hover:backdrop-blur-md rounded-md p-2 
-                cursor-pointer transition-all duration-300'>
-
-              <span class='mr-4 text-stone-200 text-xl'> <IoMdAnalytics /> </span>
-              <Link href='/' class='flex-1 text-stone-200'>Reports</Link>
-            </li>
-
-            <li class='flex justify-start items-center 
-                hover:bg-glass-bg hover:backdrop-blur-md rounded-md p-2 
-                cursor-pointer transition-all duration-300'>
-
-              <span class='mr-4 text-stone-200 text-xl'> <HiInformationCircle /> </span>
-              <Link href='/' class='flex-1 text-stone-200'>What is SecuSim?</Link>
-            </li>
+                cursor-pointer transition-all duration-300"
+              >
+                <span className="mr-4 text-stone-200 text-xl">{item.icon}</span>
+                <Link href={item.link} className="flex-1 text-stone-200">
+                  {item.label}
+                </Link>
+                {item.hasChevron && <HiChevronRight className="text-stone-200" />}
+              </li>
+            ))}
           </ul>
         </aside>
 
