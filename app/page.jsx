@@ -1,25 +1,38 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { Card, Button, Popover } from 'flowbite-react'
 
 const page = () => {
   return (
     <div className='font-montserrat'>
 
-      <div className='text-center text-3xl font-bold text-stone-600 py-5'> Welcome to SecuSim </div>
+      <div className='text-center text-3xl font-bold text-stone-600 py-5 mt-2'> Welcome to SecuSim </div>
 
-      <div className='flex justify-evenly'>
+      <div className='flex justify-evenly mt-3'>
         <Card className='w-[45%] shadow-xl'>
-          <img src="/Topology.jpg" alt="random image" className='rounded' />
+          <Image
+            src="/Topology.jpg"
+            alt="random image"
+            width={500}
+            height={280}
+            className='rounded'
+          />
           <h5 className='text-2xl font-medium text-stone-600'> Topology Builder </h5>
           <p className='text-stone-600'> Start creating your Network Topology Architecture </p>
           <Button gradientMonochrome='teal'
             className='shadow-md transform hover:scale-105 active:scale-100 transition duration-300'
-            as={Link} href='topologies'>
+            as={Link} href='/builder'>
             Start Building </Button>
         </Card>
 
         <Card className='w-[45%] shadow-xl'>
-          <img src="/Simulation.jpg" alt="random image" className='rounded' />
+          <Image
+            src="/Simulation.jpg"
+            alt="random image"
+            width={500}
+            height={280}
+            className='rounded'
+          />
           <h5 className='text-2xl font-medium text-stone-600'> Simulation Room </h5>
           <p className='text-stone-600'> The SecuSim&apos;s pinnacle feature </p>
           <div className='flex justify-evenly gap-5'>
