@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { Network } from 'vis-network';
 import { DataSet } from 'vis-data';
 

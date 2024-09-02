@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
 import { Network } from 'vis-network';
 import { DataSet } from 'vis-data';
 import { Card, Button, Alert, Modal } from 'flowbite-react';
@@ -148,19 +149,34 @@ const TopologyBuilder = () => {
                         className="w-20 h-20 flex items-center text-stone-600 transform hover:scale-105 transition duration-300"
                         draggable
                         onDragStart={(e) => handleDragStart(e, 'Router')}>
-                        <img src="./router.png" alt="Router" />
+                        <Image
+                            src="/router.png"
+                            alt="Router"
+                            width={80}
+                            height={80}
+                        />
                     </Card>
                     <Card
                         className="w-20 h-20 flex items-center text-stone-600 transform hover:scale-105 transition duration-300"
                         draggable
                         onDragStart={(e) => handleDragStart(e, 'Hub')}>
-                        <img src="./hub.png" alt="Hub" />
+                        <Image
+                            src="/hub.png"
+                            alt="Hub"
+                            width={80}
+                            height={80}
+                        />
                     </Card>
                     <Card
                         className="w-20 h-20 flex items-center text-stone-600 transform hover:scale-105 transition duration-300"
                         draggable
                         onDragStart={(e) => handleDragStart(e, 'PC')}>
-                        <img src="./pc.png" alt="PC" />
+                        <Image
+                            src="/pc.png"
+                            alt="PC"
+                            width={80}
+                            height={80}
+                        />
                     </Card>
                 </div>
                 <div className="ml-auto">
@@ -177,28 +193,28 @@ const TopologyBuilder = () => {
             <div className="flex justify-between items-center mt-3">
                 <div className="text-gray-600 flex justify-between gap-3">
                     <div className='p-2 font-semibold'>
-                    {selectedNodes.length} node{selectedNodes.length !== 1 ? 's' : ''} selected
+                        {selectedNodes.length} node{selectedNodes.length !== 1 ? 's' : ''} selected
                     </div>
                     <Button onClick={resetSelection} color="gray"
                         className='text-stone-600 border-stone-400 shadow-md 
                             transform hover:scale-105 active:scale-100 transition duration-300'>
-                        <IoArrowUndo className='text-xl'/>
+                        <IoArrowUndo className='text-xl' />
                     </Button>
                 </div>
                 <div className="flex space-x-3">
-                    <Button onClick={handleConnectNodes} gradientMonochrome="teal" 
-                            className="text-stone-200 border-stone-400 shadow-md 
+                    <Button onClick={handleConnectNodes} gradientMonochrome="teal"
+                        className="text-stone-200 border-stone-400 shadow-md 
                             transform hover:scale-105 active:scale-100 transition duration-300">
-                        <FaLink className='text-xl'/>
+                        <FaLink className='text-xl' />
                     </Button>
-                    <Button onClick={handleDeleteNodes} gradientMonochrome="failure" 
-                            className="text-stone-200 border-stone-400 shadow-md 
+                    <Button onClick={handleDeleteNodes} gradientMonochrome="failure"
+                        className="text-stone-200 border-stone-400 shadow-md 
                             transform hover:scale-105 active:scale-100 transition duration-300">
-                        <FaTrash className='text-xl'/>
+                        <FaTrash className='text-xl' />
                     </Button>
                 </div>
             </div>
-            
+
             <Modal className='font-montserrat' size='md' show={showModal} onClose={() => setShowModal(false)} popup>
                 <Modal.Header />
                 <Modal.Body className='text-stone-600'>
