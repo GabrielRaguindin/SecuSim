@@ -33,14 +33,14 @@ const page = () => {
             height={280}
             className='rounded'
           />
-          <h5 className='text-2xl font-medium text-stone-600'> Simulation Room </h5>
+          <h5 className='text-2xl font-medium text-stone-600'> Simulation Environment </h5>
           <p className='text-stone-600'> The SecuSim&apos;s pinnacle feature </p>
           <div className='flex justify-evenly gap-5'>
             <Popover
               content={
                 <div className="w-64 text-sm text-gray-500">
                   <div className="border-b border-gray-200 bg-gray-100 px-3 py-2">
-                    <h3 className="font-semibold text-gray-900"> This is the Simulation Room </h3>
+                    <h3 className="font-semibold text-gray-900"> The Simulation Environment </h3>
                   </div>
                   <div className="px-3 py-2">
                     <p> Here you can simulate Network Policy templates
