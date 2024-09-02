@@ -1,5 +1,5 @@
 "use client";
-import React, { useContext } from 'react';
+import { useContext, useState } from 'react';
 import Link from 'next/link';
 import Headbar from './Headbar';
 
@@ -15,6 +15,16 @@ import { drawerData } from './data/drawerData';
 
 const Drawerbar = ({ children }) => {
   const { open } = useContext(DrawerContext);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value.toLowerCase());
+  }
+
+  // Filtering the data if the search input exist
+  const filteredSearch = drawerData.filter((item) =>
+    item.label.toLowerCase().includes(searchTerm)
+  );
 
   return (
     <div className='bg-stone-100 min-h-screen font-montserrat'>
@@ -27,23 +37,38 @@ const Drawerbar = ({ children }) => {
 
           <h1 className='text-xl text-stone-200'> Menu </h1>
 
-          <TextInput icon={HiSearch} type="search" placeholder="Search" required size={32} className='py-3'></TextInput>
+          <TextInput
+            icon={HiSearch}
+            type="search"
+            placeholder="Search"
+            required
+            size={32}
+            className='py-3'
+            value={searchTerm}
+            onChange={handleSearch}
+          />
 
           <ul>
-            {drawerData.map((item, index) => (
-              <li
-                key={index}
-                className="flex justify-start items-center 
-                hover:bg-glass-bg hover:backdrop-blur-md rounded-md p-2 
-                cursor-pointer transition-all duration-300"
-              >
-                <span className="mr-4 text-stone-200 text-xl">{item.icon}</span>
-                <Link href={item.link} className="flex-1 text-stone-200">
-                  {item.label}
-                </Link>
-                {item.hasChevron && <HiChevronRight className="text-stone-200" />}
+            {filteredSearch.length > 0 ? (
+              filteredSearch.map((item, index) => (
+                <li
+                  key={index}
+                  className="flex justify-start items-center 
+                  hover:bg-glass-bg hover:backdrop-blur-md rounded-md p-2 
+                  cursor-pointer transition-all duration-300"
+                >
+                  <span className="mr-4 text-stone-200 text-xl">{item.icon}</span>
+                  <Link href={item.link} className="flex-1 text-stone-200">
+                    {item.label}
+                  </Link>
+                  {item.hasChevron && <HiChevronRight className="text-stone-200" />}
+                </li>
+              ))
+            ) : (
+              <li className="text-stone-300 text-xl text-center py-5 uppercase">
+                {searchTerm ? `${searchTerm} does not exist.` : 'No items to display'}
               </li>
-            ))}
+            )}
           </ul>
         </aside>
 
