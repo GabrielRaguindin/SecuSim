@@ -14,7 +14,7 @@ const page = () => {
           <p className='text-stone-600'> Start creating your Network Topology Architecture </p>
           <Button gradientMonochrome='teal'
             className='shadow-md transform hover:scale-105 active:scale-100 transition duration-300'
-            as={Link} href='topologies'>
+            as={Link} href='/builder'>
             Start Building </Button>
         </Card>
 

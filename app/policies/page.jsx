@@ -56,7 +56,7 @@ const page = () => {
   return (
 
     <div className='font-montserrat'>
-      <div className='text-center text-3xl font-bold text-stone-600 py-5'> Policy Templates </div>
+      <div className='text-center text-2xl font-bold text-stone-600 py-5'> Policy Templates (Staging!) </div>
 
       <div className='flex flex-col justify-center p-5 gap-5'>
         <Card className='w-[100%] shadow-xl'>
