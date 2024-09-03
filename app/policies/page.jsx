@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Card, Button, Modal, Checkbox, Label } from 'flowbite-react'
 import { SiOpenaccess } from "react-icons/si";
 import { TbCloudDataConnection } from "react-icons/tb";

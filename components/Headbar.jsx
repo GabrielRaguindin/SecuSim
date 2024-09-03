@@ -1,5 +1,5 @@
 "use client";
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { FaBars } from 'react-icons/fa6'
 import { DrawerContext } from '@/context/DwrContext';
 
