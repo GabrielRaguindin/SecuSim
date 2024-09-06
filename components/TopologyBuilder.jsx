@@ -8,7 +8,7 @@ import { DataSet } from 'vis-data';
 import { saveTopology, getTopology, deleteTopology, getSavedTopologies } from '@/pages/api/saveTopology';
 
 // Imported UI Components
-import { Card, Button, Alert, Modal, TextInput, Dropdown } from 'flowbite-react';
+import { Card, Button, Alert, Modal, TextInput, Dropdown, Tooltip } from 'flowbite-react';
 
 // Imported Icons
 import { HiOutlineExclamationCircle } from "react-icons/hi";
@@ -19,23 +19,23 @@ import { FaLink } from 'react-icons/fa';
 
 const TopologyBuilder = () => {
 
+    // Refs
     const networkRef = useRef(null);
     const network = useRef(null);
     const nodes = useRef(new DataSet([]));
     const edges = useRef(new DataSet([]));
 
+    // States
     const [selectedNodes, setSelectedNodes] = useState([]);
     const [showAlert, setShowAlert] = useState({ show: false, message: '', type: '' });
     const [showModal, setShowModal] = useState(false);
     const [saveModal, setSaveModal] = useState(false);
-
     const [topologyName, setTopologyName] = useState('');
     const [savedTopologies, setSavedTopologies] = useState([]);
 
     const resetSelection = () => {
         setSelectedNodes([]);
     };
-
 
     // Use Effects
     useEffect(() => {
@@ -189,42 +189,52 @@ const TopologyBuilder = () => {
 
     return (
         <div className="p-4 font-montserrat">
+
+            {/* Node types */}
             <div className="flex items-center mb-4">
                 <div className="flex space-x-4">
                     <Card
                         className="w-20 h-20 flex items-center text-stone-600 transform hover:scale-105 transition duration-300"
                         draggable
                         onDragStart={(e) => handleDragStart(e, 'Router')}>
-                        <Image
-                            src="/router.png"
-                            alt="Router"
-                            width={80}
-                            height={80}
-                        />
+                        <Tooltip content='Router'>
+                            <Image
+                                src="/router.png"
+                                alt="Router"
+                                width={80}
+                                height={80}
+                            />
+                        </Tooltip>
                     </Card>
                     <Card
                         className="w-20 h-20 flex items-center text-stone-600 transform hover:scale-105 transition duration-300"
                         draggable
                         onDragStart={(e) => handleDragStart(e, 'Hub')}>
-                        <Image
-                            src="/hub.png"
-                            alt="Hub"
-                            width={80}
-                            height={80}
-                        />
+                        <Tooltip content='Hub'>
+                            <Image
+                                src="/hub.png"
+                                alt="Hub"
+                                width={80}
+                                height={80}
+                            />
+                        </Tooltip>
                     </Card>
                     <Card
                         className="w-20 h-20 flex items-center text-stone-600 transform hover:scale-105 transition duration-300"
                         draggable
                         onDragStart={(e) => handleDragStart(e, 'PC')}>
-                        <Image
-                            src="/pc.png"
-                            alt="PC"
-                            width={80}
-                            height={80}
-                        />
+                        <Tooltip content='PC'>
+                            <Image
+                                src="/pc.png"
+                                alt="PC"
+                                width={80}
+                                height={80}
+                            />
+                        </Tooltip>
                     </Card>
                 </div>
+
+                {/* Alert */}
                 <div className="ml-auto">
                     {showAlert.show && (
                         <Alert color={showAlert.type} className="mb-4">
@@ -236,6 +246,7 @@ const TopologyBuilder = () => {
 
             <div ref={networkRef} className="relative border-2 border-dashed border-gray-300 rounded-lg h-96"></div>
 
+            {/* Toolbar */}
             <div className="flex justify-between items-center mt-3">
                 <div className="text-gray-600 flex justify-between gap-3">
                     <div className='p-2 font-semibold'>
@@ -246,7 +257,7 @@ const TopologyBuilder = () => {
                             transform hover:scale-105 active:scale-100 transition duration-300'>
                         <IoArrowUndo className='text-xl' />
                     </Button>
-                    <Dropdown label="Select Topology" className="mt-2" gradientMonochrome="teal">
+                    <Dropdown label="Saved Topologies" className="mt-2" gradientMonochrome="teal">
                         {savedTopologies.map((name) => (
                             <Dropdown.Item key={name} className='font-bold'>
                                 {name}
@@ -262,22 +273,31 @@ const TopologyBuilder = () => {
                         ))}
                     </Dropdown>
                 </div>
-                <div className="flex space-x-3">
-                    <Button onClick={handleConnectNodes} gradientMonochrome="teal"
-                        className="text-stone-200 border-stone-400 shadow-md 
+
+                <div className="flex space-x-3 mr-3">
+                    <Tooltip content='Link Nodes'>
+                        <Button onClick={handleConnectNodes} gradientMonochrome="teal"
+                            className="text-stone-200 border-stone-400 shadow-md 
                             transform hover:scale-105 active:scale-100 transition duration-300">
-                        <FaLink className='text-xl' />
-                    </Button>
-                    <Button onClick={handleDeleteNodes} gradientMonochrome="failure"
-                        className="text-stone-200 border-stone-400 shadow-md 
+                            <FaLink className='text-xl' />
+                        </Button>
+                    </Tooltip>
+
+                    <Tooltip content='Delete Nodes'>
+                        <Button onClick={handleDeleteNodes} gradientMonochrome="failure"
+                            className="text-stone-200 border-stone-400 shadow-md 
                             transform hover:scale-105 active:scale-100 transition duration-300">
-                        <FaTrash className='text-xl' />
-                    </Button>
-                    <Button onClick={() => setSaveModal(true)} gradientMonochrome="success"
-                        className="text-stone-200 border-stone-400 shadow-md
+                            <FaTrash className='text-xl' />
+                        </Button>
+                    </Tooltip>
+
+                    <Tooltip content='Save Topology'>
+                        <Button onClick={() => setSaveModal(true)} gradientMonochrome="success"
+                            className="text-stone-200 border-stone-400 shadow-md
                             transform hover:scale-105 active:scale-100 transition duration-300">
-                        <IoIosSave className='text-2xl' />
-                    </Button>
+                            <IoIosSave className='text-2xl' />
+                        </Button>
+                    </Tooltip>
                 </div>
             </div>
 
@@ -306,7 +326,7 @@ const TopologyBuilder = () => {
                 </Modal.Body>
             </Modal>
 
-            {/* Topologue Save Modal */}
+            {/* Topology Save Modal */}
             <Modal className='font-montserrat' size='md' show={saveModal} onClose={() => setSaveModal(false)} popup>
                 <Modal.Header className='bg-gradient-to-r from-green-400 from-10% to-green-700 to-90%'> Save Topology </Modal.Header>
                 <Modal.Body className='text-stone-600'>
