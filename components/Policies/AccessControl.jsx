@@ -21,7 +21,8 @@ export default function AccessControl() {
             <PolicyCard
                 icon={SiOpenaccess}
                 title="Access Control Policy"
-                description="Access control policy functions by authenticating user credentials..."
+                description="Access control policies function by authenticating user credentials, 
+                    proving their identity, and allowing the pre-approved permissions."
                 onViewDetailsClick={() => setOpenModalAccess(true)}
             />
 
