@@ -13,9 +13,8 @@ import { Card, Button, Alert, Modal, TextInput, Dropdown, Tooltip } from 'flowbi
 // Imported Icons
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { IoArrowUndo } from "react-icons/io5";
-import { IoIosSave } from "react-icons/io";
 import { FaTrash } from 'react-icons/fa6';
-import { FaLink } from 'react-icons/fa';
+import { FaLink, FaSave } from 'react-icons/fa';
 
 const TopologyBuilder = () => {
 
@@ -193,45 +192,47 @@ const TopologyBuilder = () => {
             {/* Node types */}
             <div className="flex items-center mb-4">
                 <div className="flex space-x-4">
-                    <Card
-                        className="w-20 h-20 flex items-center text-stone-600 transform hover:scale-105 transition duration-300"
-                        draggable
-                        onDragStart={(e) => handleDragStart(e, 'Router')}>
-                        <Tooltip content='Router'>
+                    <Tooltip content="Router" style='light' placement='bottom' animation='duration-500'>
+                        <Card
+                            className="w-20 h-20 flex items-center text-stone-600 transform hover:scale-105 transition duration-300"
+                            draggable
+                            onDragStart={(e) => handleDragStart(e, 'Router')}>
                             <Image
                                 src="/router.png"
                                 alt="Router"
                                 width={80}
                                 height={80}
                             />
-                        </Tooltip>
-                    </Card>
-                    <Card
-                        className="w-20 h-20 flex items-center text-stone-600 transform hover:scale-105 transition duration-300"
-                        draggable
-                        onDragStart={(e) => handleDragStart(e, 'Hub')}>
-                        <Tooltip content='Hub'>
+                        </Card>
+                    </Tooltip>
+
+                    <Tooltip content="Hub" style='light' placement='bottom' animation='duration-500'>
+                        <Card
+                            className="w-20 h-20 flex items-center text-stone-600 transform hover:scale-105 transition duration-300"
+                            draggable
+                            onDragStart={(e) => handleDragStart(e, 'Hub')}>
                             <Image
                                 src="/hub.png"
                                 alt="Hub"
                                 width={80}
                                 height={80}
                             />
-                        </Tooltip>
-                    </Card>
-                    <Card
-                        className="w-20 h-20 flex items-center text-stone-600 transform hover:scale-105 transition duration-300"
-                        draggable
-                        onDragStart={(e) => handleDragStart(e, 'PC')}>
-                        <Tooltip content='PC'>
+                        </Card>
+                    </Tooltip>
+
+                    <Tooltip content="PC" style='light' placement='bottom' animation='duration-500'>
+                        <Card
+                            className="w-20 h-20 flex items-center text-stone-600 transform hover:scale-105 transition duration-300"
+                            draggable
+                            onDragStart={(e) => handleDragStart(e, 'PC')}>
                             <Image
                                 src="/pc.png"
                                 alt="PC"
                                 width={80}
                                 height={80}
                             />
-                        </Tooltip>
-                    </Card>
+                        </Card>
+                    </Tooltip>
                 </div>
 
                 {/* Alert */}
@@ -274,8 +275,8 @@ const TopologyBuilder = () => {
                     </Dropdown>
                 </div>
 
-                <div className="flex space-x-3 mr-3">
-                    <Tooltip content='Link Nodes'>
+                <div className="flex space-x-3">
+                    <Tooltip content='Link Nodes' style='light' placement='top' animation='duration-500'>
                         <Button onClick={handleConnectNodes} gradientMonochrome="teal"
                             className="text-stone-200 border-stone-400 shadow-md 
                             transform hover:scale-105 active:scale-100 transition duration-300">
@@ -283,7 +284,7 @@ const TopologyBuilder = () => {
                         </Button>
                     </Tooltip>
 
-                    <Tooltip content='Delete Nodes'>
+                    <Tooltip content='Delete Nodes' style='light' placement='top' animation='duration-500'>
                         <Button onClick={handleDeleteNodes} gradientMonochrome="failure"
                             className="text-stone-200 border-stone-400 shadow-md 
                             transform hover:scale-105 active:scale-100 transition duration-300">
@@ -291,11 +292,11 @@ const TopologyBuilder = () => {
                         </Button>
                     </Tooltip>
 
-                    <Tooltip content='Save Topology'>
+                    <Tooltip content='Save' style='light' placement='top' animation='duration-500'>
                         <Button onClick={() => setSaveModal(true)} gradientMonochrome="success"
                             className="text-stone-200 border-stone-400 shadow-md
                             transform hover:scale-105 active:scale-100 transition duration-300">
-                            <IoIosSave className='text-2xl' />
+                            <FaSave className='text-xl' />
                         </Button>
                     </Tooltip>
                 </div>
