@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Card, Button, Modal } from 'flowbite-react';
 import { TbTopologyFull, TbTopologyRing, TbTopologyStar } from 'react-icons/tb';
 import { TopologyCanvas } from '@/components/TopologyCanvas';
