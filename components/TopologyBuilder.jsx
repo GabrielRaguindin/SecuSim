@@ -332,25 +332,6 @@ const TopologyBuilder = () => {
                     </div>
                 </Modal.Body>
             </Modal>
-
-            {/* }
-            <div className="mt-4">
-                <Dropdown label="Select Topology" className="mt-2">
-                    {savedTopologies.map((name) => (
-                        <Dropdown.Item key={name}>
-                            {name}
-                            <div className="flex space-x-2">
-                                <Button onClick={() => handleLoadTopology(name)} size="xs">
-                                    Load
-                                </Button>
-                                <Button onClick={() => handleDeleteTopology(name)} size="xs" color="failure">
-                                    Delete
-                                </Button>
-                            </div>
-                        </Dropdown.Item>
-                    ))}
-                </Dropdown>
-            </div> */}
         </div>
     );
 };
