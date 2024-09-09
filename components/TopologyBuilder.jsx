@@ -29,6 +29,7 @@ const TopologyBuilder = () => {
     const [showAlert, setShowAlert] = useState({ show: false, message: '', type: '' });
     const [showModal, setShowModal] = useState(false);
     const [saveModal, setSaveModal] = useState(false);
+    const [showOverwriteModal, setShowOverwriteModal] = useState(false);
     const [topologyName, setTopologyName] = useState('');
     const [savedTopologies, setSavedTopologies] = useState([]);
 
@@ -162,14 +163,28 @@ const TopologyBuilder = () => {
 
     const handleSaveTopology = () => {
         if (topologyName) {
-            saveTopology(topologyName, nodes.current.get(), edges.current.get());
-            setSavedTopologies(getSavedTopologies()); // Refresh saved topologies list
-            setShowAlert({ show: true, message: 'Topology saved successfully!', type: 'success' });
+            const existingTopologies = getSavedTopologies();
+            if (existingTopologies.includes(topologyName)) {
+                setShowAlert({ show: true, message: 'Topology with the same name already exists. Please choose a different name.', type: 'warning' });
+                setShowOverwriteModal(true);
+            } else {
+                saveTopology(topologyName, nodes.current.get(), edges.current.get());
+                setSavedTopologies(getSavedTopologies());
+                setShowAlert({ show: true, message: 'Topology saved successfully!', type: 'success' });
+                setSaveModal(false);
+            }
         } else {
             setShowAlert({ show: true, message: 'Please provide a name to save the topology', type: 'warning' });
         }
-        setSaveModal(false);
     };
+
+    const confirmOverwrite = () => {
+        saveTopology(topologyName, nodes.current.get(), edges.current.get());
+        setSavedTopologies(getSavedTopologies());
+        setShowAlert({ show: true, message: 'Topology overwritten successfully!', type: 'success' });
+        setShowOverwriteModal(false);
+        setSaveModal(false);
+    }
 
     const handleLoadTopology = (name) => {
         const savedTopology = getTopology(name);
@@ -256,7 +271,7 @@ const TopologyBuilder = () => {
                     <Button onClick={resetSelection} color="gray"
                         className='text-stone-600 border-stone-400 shadow-md 
                             transform hover:scale-105 active:scale-100 transition duration-300'>
-                        <IoArrowUndo className='text-xl' />
+                        <IoArrowUndo />
                     </Button>
                     <Dropdown label="Saved Topologies" className="mt-2" gradientMonochrome="teal">
                         {savedTopologies.map((name) => (
@@ -307,7 +322,7 @@ const TopologyBuilder = () => {
                 <Modal.Header />
                 <Modal.Body className='text-stone-600'>
                     <div className='text-center'>
-                        <HiOutlineExclamationCircle className='mx-auto mb-4 h-14 w-14 text-gray-400' />
+                        <HiOutlineExclamationCircle className='mx-auto mb-4 h-14 w-14 text-gray-400 text-red-500' />
                         <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
                             Are you sure you want to delete the selected node(s)?
                         </h3>
@@ -346,6 +361,31 @@ const TopologyBuilder = () => {
                             Yes, Save
                         </Button>
                         <Button onClick={() => setSaveModal(false)} color="gray"
+                            className='text-stone-600 border-stone-400 shadow-md 
+                            transform hover:scale-105 active:scale-100 transition duration-300'>
+                            Cancel
+                        </Button>
+                    </div>
+                </Modal.Body>
+            </Modal>
+
+            {/* Topology Overwrite Modal */}
+            <Modal className='font-montserrat' size='md' show={showOverwriteModal} onClose={() => setShowOverwriteModal(false)} popup>
+                <Modal.Header />
+                <Modal.Body className='text-stone-600'>
+                    <div className='text-center'>
+                        <HiOutlineExclamationCircle className='mx-auto mb-4 h-14 w-14 text-gray-400 text-red-500' />
+                        <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+                            Topology already exists. Do you wish to overwrite it?
+                        </h3>
+                    </div>
+                    <div className="flex justify-center gap-4">
+                        <Button onClick={confirmOverwrite} gradientMonochrome='failure'
+                            className='text-stone-100 border-stone-400 shadow-md 
+                                transform hover:scale-105 active:scale-100 transition duration-300'>
+                            Yes, Overwrite
+                        </Button>
+                        <Button onClick={() => setShowOverwriteModal(false)} color="gray"
                             className='text-stone-600 border-stone-400 shadow-md 
                             transform hover:scale-105 active:scale-100 transition duration-300'>
                             Cancel
