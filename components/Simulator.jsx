@@ -12,7 +12,7 @@ const Simulator = () => {
         <div className='font-montserrat'>
             <div className='flex justify-evenly mb-7'>
                 <Card className='w-[45%] shadow-xl'>
-                    <LuFileWarning className='text-5xl text-stone-600' />
+                    <LuFileWarning className='text-6xl text-stone-600' />
                     <h1 className='text-2xl font-medium text-stone-600'>
                         Scenario 1 </h1>
 
