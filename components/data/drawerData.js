@@ -10,7 +10,7 @@ export const drawerData = [
     { icon: <MdPolicy />, link: '/policies', label: 'Policy Templates', hasChevron: true },
     { icon: <PiNetworkFill />, link: '/topologies', label: 'Topology Templates', hasChevron: true },
     { icon: <FaHammer />, link: '/builder', label: 'Topology Builder', hasChevron: true },
-    { icon: <HiCubeTransparent />, link: '/', label: 'Simulate', hasChevron: true },
+    { icon: <HiCubeTransparent />, link: '/simulation', label: 'Simulate', hasChevron: true },
     { icon: <IoMdAnalytics />, link: '/', label: 'Reports' },
     { icon: <HiInformationCircle />, link: '/about', label: 'What is SecuSim?' },
 ]

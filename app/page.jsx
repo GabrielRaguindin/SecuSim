@@ -43,11 +43,10 @@ const page = () => {
                     <h3 className="font-semibold text-gray-900"> The Simulation Environment </h3>
                   </div>
                   <div className="px-3 py-2">
-                    <p> Here you can simulate Network Policy templates
-                      into a Network Topology architecture.
-                    </p>
-                    <p> In this Simulation Room, you can deploy the policies into
-                      a device in a topology to test it&apos;s effectiveness. </p>
+                    <p> You will pick a specific scenario to simulate, each scenario has its own
+                      set of problems for you to solve. </p>
+                    <p> Within that, you will build a Network Topology Architecture, apply and modify
+                      Network Policies that the scenario requires. </p>
                   </div>
                 </div>
               }
