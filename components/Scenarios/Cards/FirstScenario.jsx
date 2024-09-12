@@ -15,7 +15,7 @@ export default function FirstScenario() {
                 icon={LuFileWarning}
                 title="Scenario 1"
                 description="Simulate a scenario where a specific network has a problem with file sharing."
-                onButtonClick={() => handleButtonClick(true)}
+                onButtonClick={handleButtonClick}
             />
         </>
     )
