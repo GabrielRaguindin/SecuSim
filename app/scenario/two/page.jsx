@@ -1,10 +1,28 @@
-import React from 'react'
-import SecondScenario from '@/components/Scenarios/SecondScenario'
+"use client";
 
-const page = () => {
+import { useState } from "react";
+import { Button } from "flowbite-react";
+import ScenarioModal from "@/components/ScenarioModal";
+
+export default function Two() {
+  const [openScenarioModal, setOpenScenarioModal] = useState(true);
+
   return (
-    <div><SecondScenario /></div>
+    <>
+      <div className="flex justify-end p-5">
+        <Button
+          gradientMonochrome="teal"
+          className="shadow-md transform hover:scale-105 active:scale-100 transition duration-300"
+          onClick={() => setOpenScenarioModal(true)}> Open Scenario Details </Button>
+      </div>
+
+      <ScenarioModal
+        title="Given Scenario"
+        description="Scenario 2 description: To be added..."
+        openModal={openScenarioModal}
+        setOpenModal={setOpenScenarioModal}
+      />
+
+    </>
   )
 }
-
-export default page
