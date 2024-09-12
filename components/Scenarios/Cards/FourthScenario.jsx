@@ -8,7 +8,7 @@ export default function FourthScenario() {
     const router = useRouter();
 
     const handleButtonClick = () => {
-        router.push('/scenario/four');
+        router.push('/simulation/scenario/four');
     }
 
     return (

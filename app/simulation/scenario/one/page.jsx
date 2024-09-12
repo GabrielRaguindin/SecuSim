@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import { Button } from "flowbite-react";
-import ScenarioModal from "@/components/ScenarioModal";
+import ScenarioModal from "@/components/Scenarios/ScenarioModal";
 
-export default function Three() {
+export default function One() {
+
   const [openScenarioModal, setOpenScenarioModal] = useState(true);
 
   return (
@@ -18,7 +19,7 @@ export default function Three() {
 
       <ScenarioModal
         title="Given Scenario"
-        description="Scenario 3 description: To be added..."
+        description="Scenario 1 description: To be added..."
         openModal={openScenarioModal}
         setOpenModal={setOpenScenarioModal}
       />

@@ -8,8 +8,9 @@ export default function SecondScenario() {
     const router = useRouter();
 
     const handleButtonClick = () => {
-        router.push('/scenario/two');
+        router.push('/simulation/scenario/two');
     }
+    
     return (
         <>
             <ScenarioCard
