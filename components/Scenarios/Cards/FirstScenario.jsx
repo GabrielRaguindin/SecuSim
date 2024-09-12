@@ -6,9 +6,11 @@ import { LuFileWarning } from "react-icons/lu";
 
 export default function FirstScenario() {
     const router = useRouter();
+
     const handleButtonClick = () => {
-        router.push('/scenario/one');
+        router.push('/simulation/scenario/one');
     }
+    
     return (
         <>
             <ScenarioCard

@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import { Network } from 'vis-network';
 import { DataSet } from 'vis-data';
 
-export function TopologyCanvas ({ nodes, edges }) {
+export default function TopologyCanvas ({ nodes, edges }) {
     const networkContainerRef = useRef(null);
 
     useEffect(() => {
