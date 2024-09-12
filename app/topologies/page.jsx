@@ -70,7 +70,7 @@ const page = () => {
 
   return (
     <div className='font-montserrat'>
-      <div className='text-center text-2xl font-bold text-stone-600 py-5'> Topology Templates (Staging!) </div>
+      <div className='text-center text-2xl font-bold text-stone-600 py-5'> Topology Templates </div>
 
       {/* Templates: Ring, Star, Mesh */}
       <div className='flex flex-col justify-center p-5 gap-5'>
