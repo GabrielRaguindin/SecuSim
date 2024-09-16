@@ -3,7 +3,7 @@
 import { Modal, Button } from "flowbite-react";
 import { useEffect } from "react";
 
-export default function ScenarioModal({ title, description, openModal, setOpenModal }) {
+export default function ScenarioModal({ title, scenarioDesc, description, openModal, setOpenModal, objOne, objTwo, objThree }) {
     const handleKeyDown = (e) => {
         if (e.key === 'Escape') {
             setOpenModal(false);
@@ -27,10 +27,19 @@ export default function ScenarioModal({ title, description, openModal, setOpenMo
             <Modal.Header className="bg-gradient-to-r from-teal-400 from-10% to-teal-700 to-90%">{title}</Modal.Header>
             <Modal.Body>
                 <div className='space-y-2'>
-                    <p className='text-stone-600 font-bold'> Problem Description : </p>
-                    <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                    <p className='text-stone-600 font-bold text-lg'> {scenarioDesc} </p>
+                    <p className='text-stone-600 font-bold'> Objective : </p>
+                    <p className="text-base leading-relaxed text-gray-600 dark:text-gray-400">
                         {description}
                     </p>
+                    <p className='text-stone-600 font-bold'> Requirements : </p>
+                    <div className="space-y-3 ml-5 text-stone-600">
+                        <ul className="list-disc list-inside">
+                            <li> {objOne} </li>
+                            <li> {objTwo} </li>
+                            <li> {objThree} </li>
+                        </ul>
+                    </div>
                 </div>
                 <div className="flex justify-end mt-5">
                     <Button gradientMonochrome="teal" onClick={() => setOpenModal(false)}

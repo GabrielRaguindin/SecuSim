@@ -16,7 +16,7 @@ export default function ThirdScenario() {
             <ScenarioCard 
                 icon={PiCloudWarning}
                 title="Scenario 3"
-                description="Simulate a scenario where the network has to prioritize streaming over gaming."
+                description="VoIP Communication in a Mesh Network"
                 onButtonClick={handleButtonClick}
             />
         </>
