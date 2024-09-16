@@ -17,8 +17,12 @@ export default function Three() {
       </div>
 
       <ScenarioModal
-        title="Given Scenario"
-        description="Scenario 3 description: To be added..."
+        title="Scenario 3"
+        scenarioDesc="VoIP Communication in a Mesh Network"
+        description="Build a mesh topology with 20 devices supporting smooth VoIP communication between all devices."
+        objOne="Build a mesh network with 20 devices, consisting of PCs, hubs, and routers. Ensure each device can connect to at least two other devices."
+        objTwo="Enable VoIP communication for all devices and limit peer-to-peer (P2P) traffic to prevent bandwidth congestion."
+        objThree="Enable remote desktop access for the routers and hubs only to allow network administrators to monitor the devices remotely."
         openModal={openScenarioModal}
         setOpenModal={setOpenScenarioModal}
       />

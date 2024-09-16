@@ -16,7 +16,7 @@ export default function FourthScenario() {
             <ScenarioCard 
                 icon={PiSealWarning}
                 title="Scenario 4"
-                description="Simulate a scenario where the network has no firewall activated."
+                description="Secure Data Transfer in a Hybrid Network"
                 onButtonClick={handleButtonClick}
             />
         </>    

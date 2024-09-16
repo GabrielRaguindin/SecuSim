@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Button } from "flowbite-react";
 import ScenarioModal from "@/components/Scenarios/ScenarioModal";
+import ScenarioOne from "@/components/Scenarios/Environment/ScenarioOne";
 
 export default function One() {
 
@@ -17,9 +18,15 @@ export default function One() {
           onClick={() => setOpenScenarioModal(true)}> Open Scenario Details </Button>
       </div>
 
+      <ScenarioOne />
+
       <ScenarioModal
-        title="Given Scenario"
-        description="Scenario 1 description: To be added..."
+        title="Scenario 1"
+        scenarioDesc="File Sharing in a secure Ring Network"
+        description="Build a ring topology with 10 PCs and 2 routers where only certain PCs can transfer files securely."
+        objOne="Create a ring topology with 10 PCs and 2 routers. Ensure that each PC is connected to at least one router."
+        objTwo="Enable file transfer access only for 5 specific PCs. The remaining PCs should not have file transfer access."
+        objThree="Block untrusted IPs to prevent unauthorized access to the file-sharing PCs. Allow web traffic for all devices."
         openModal={openScenarioModal}
         setOpenModal={setOpenScenarioModal}
       />

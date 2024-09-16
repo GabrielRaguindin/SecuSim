@@ -16,7 +16,7 @@ export default function SecondScenario() {
             <ScenarioCard
                 icon={PiShieldWarning}
                 title="Scenario 2"
-                description="Simulate a scenario where a specific network has experiencing a network breach."
+                description="Optimized Video Streaming in a Star Network"
                 onButtonClick={handleButtonClick}
             />
         </>
