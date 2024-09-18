@@ -1,38 +1,51 @@
 "use client"
 
+// Imported Modules
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { Network } from 'vis-network';
 import { DataSet } from 'vis-data';
 
+// Imported Icons
 import { IoArrowUndo } from "react-icons/io5";
 import { FaTrash } from 'react-icons/fa6';
 import { FaLink } from 'react-icons/fa';
 import { HiOutlineExclamationCircle } from 'react-icons/hi';
 
+// Imported UI Components
 import { Card, Button, Checkbox, Dropdown, Label, Tooltip, Modal, TextInput, Alert } from 'flowbite-react'
 
 export default function ScenarioOne() {
 
+    // Network Variables
     const networkRef = useRef(null);
     const network = useRef(null);
     const nodes = useRef(new DataSet([]));
     const edges = useRef(new DataSet([]));
 
+    // State Variables (Selections)
+    const [selectedDevice, setSelectedDevice] = useState(null);
     const [selectedNodes, setSelectedNodes] = useState([]);
+
+    // State Variables (Modals & Alerts)
     const [showAlert, setShowAlert] = useState({ show: false, message: '', type: '' });
     const [showModal, setShowModal] = useState(false);
     const [showIpModal, setShowIpModal] = useState(false);
+    const [showSimulationModal, setShowSimulationModal] = useState(false);
+
+    // State Variables (Simulation Messages)
+    const [errorMessages, setErrorMessages] = useState([]);
+    const [successMessages, setSuccessMessages] = useState([]);
+
+    // State Variables (Simulation Settings)
     const [editingNode, setEditingNode] = useState(null);
     const [fakeIpAddress, setFakeIpAddress] = useState('');
     const [deviceIPs, setDeviceIPs] = useState({});
     const [devicePolicies, setDevicePolicies] = useState({});
-    const [selectedDevice, setSelectedDevice] = useState(null);
+    const [isSimulationRunning, setIsSimulationRunning] = useState(false);
+    const [progress, setProgress] = useState(0);
 
-    const resetSelection = () => {
-        setSelectedNodes([]);
-    };
-
+    // Use Effect for Network
     useEffect(() => {
         const container = networkRef.current;
         const data = {
@@ -85,6 +98,7 @@ export default function ScenarioOne() {
         };
     }, []);
 
+    // Use Effect for Alerts
     useEffect(() => {
         let timeout;
         if (showAlert.show) {
@@ -95,10 +109,7 @@ export default function ScenarioOne() {
         return () => clearTimeout(timeout);
     }, [showAlert]);
 
-    const handleDragStart = (event, deviceType) => {
-        event.dataTransfer.setData('deviceType', deviceType);
-    };
-
+    // Use Effect for Device IPs
     useEffect(() => {
         const nodesData = nodes.current.get();
         const ips = {};
@@ -110,6 +121,7 @@ export default function ScenarioOne() {
         setDeviceIPs(ips);
     }, []);
 
+    // Use Effect for Device Selection
     useEffect(() => {
         network.current.on('selectedNode', (params) => {
             if (params.nodes.length === 1) {
@@ -119,6 +131,15 @@ export default function ScenarioOne() {
             }
         })
     })
+
+    // Functions
+    const resetSelection = () => {
+        setSelectedNodes([]);
+    };
+
+    const handleDragStart = (event, deviceType) => {
+        event.dataTransfer.setData('deviceType', deviceType);
+    };
 
     const handleDrop = (event) => {
         event.preventDefault();
@@ -170,29 +191,6 @@ export default function ScenarioOne() {
         }
     };
 
-    const handleDeleteNodes = () => {
-        setShowModal(true);
-    };
-
-    const confirmDeleteNodes = () => {
-        if (selectedNodes.length > 0) {
-            nodes.current.remove(selectedNodes);
-            edges.current.remove(edges.current.get().filter(edge => selectedNodes.includes(edge.from) || selectedNodes.includes(edge.to)));
-            setDeviceIPs(prev => {
-                const updatedIPs = {...prev};
-                selectedNodes.forEach(nodeId => {
-                    delete updatedIPs[nodeId];
-                });
-                return updatedIPs;
-            });
-            setSelectedNodes([]);
-            setShowAlert({ show: true, message: 'Selected node(s) deleted successfully!', type: 'failure' });
-        } else {
-            setShowAlert({ show: true, message: 'No node selected for deletion', type: 'warning' });
-        }
-        setShowModal(false);
-    };
-
     const handleConnectNodes = () => {
         if (selectedNodes.length === 2) {
             const [from, to] = selectedNodes;
@@ -208,39 +206,63 @@ export default function ScenarioOne() {
         }
     };
 
+    const handleDeleteNodes = () => {
+        setShowModal(true);
+    };
+
+    const confirmDeleteNodes = () => {
+        if (selectedNodes.length > 0) {
+            nodes.current.remove(selectedNodes);
+            edges.current.remove(edges.current.get().filter(edge => selectedNodes.includes(edge.from) || selectedNodes.includes(edge.to)));
+            setDeviceIPs(prev => {
+                const updatedIPs = { ...prev };
+                selectedNodes.forEach(nodeId => {
+                    delete updatedIPs[nodeId];
+                });
+                return updatedIPs;
+            });
+            setSelectedNodes([]);
+            setShowAlert({ show: true, message: 'Selected node(s) deleted successfully!', type: 'failure' });
+        } else {
+            setShowAlert({ show: true, message: 'No node selected for deletion', type: 'warning' });
+        }
+        setShowModal(false);
+    };
+
     const isIPUnique = (ip) => {
         return !Object.values(deviceIPs).includes(ip);
     };
 
     const updateNodeLabel = (nodeId, newIp) => {
         const node = nodes.current.get(nodeId);
-        const newLabel = node.label.split('\n')[0] + (newIp ? `\n${newIp}` : '');  // Ensure only one IP is shown
+        const newLabel = node.label.split('\n')[0] + (newIp ? `\n${newIp}` : '');
         nodes.current.update({ ...node, ip: newIp, label: newLabel });
     };
 
     const saveFakeIP = () => {
         if (editingNode) {
-            // Check if IP is unique
             if (!isIPUnique(fakeIpAddress)) {
                 setShowAlert({ show: true, message: 'IP address already in use. Please choose a different IP.', type: 'warning' });
                 return;
             }
-
-            if (editingNode.ip) {
-                setDeviceIPs(prev => {
-                    const { [editingNode.id]: _, ...rest } = prev;  // Remove old IP entry
-                    return rest;
-                });
-            }
-
-            // Update node with new IP
             updateNodeLabel(editingNode.id, fakeIpAddress);
 
-            // Update the deviceIPs state
-            setDeviceIPs((prev) => ({
-                ...prev,
-                [editingNode.id]: fakeIpAddress,
-            }));
+            setDeviceIPs(prev => {
+                const { [editingNode.id]: _, ...rest } = prev;
+                return { ...rest, [editingNode.id]: fakeIpAddress };
+            });
+
+            setDevicePolicies(prev => {
+                const { [editingNode.id]: policies, ...rest } = prev;
+                return {
+                    ...rest,
+                    [fakeIpAddress]: policies || {
+                        accessControl: [],
+                        qos: [],
+                        firewall: [],
+                    }
+                };
+            });
 
             setEditingNode(null);
             setShowIpModal(false);
@@ -251,13 +273,13 @@ export default function ScenarioOne() {
     const handlePolicyChange = (policyType, policyName) => {
         if (selectedDevice) {
             setDevicePolicies(prev => {
-                // Ensure selectedDevice has an entry in devicePolicies
+
                 const currentPolicies = prev[selectedDevice] || {
                     accessControl: [],
                     qos: [],
                     firewall: [],
                 };
-    
+
                 return {
                     ...prev,
                     [selectedDevice]: {
@@ -287,6 +309,141 @@ export default function ScenarioOne() {
         }
     };
 
+    const validateRingTopology = (nodes, edges) => {
+        const adjacencyList = {};
+        let pcCount = 0;
+        let routerCount = 0;
+
+        nodes.forEach(node => {
+            if (node.label.startsWith('PC')) {
+                pcCount++;
+            } else if (node.label.startsWith('Router')) {
+                routerCount++;
+            }
+        });
+
+        edges.forEach(edge => {
+            if (!adjacencyList[edge.from]) {
+                adjacencyList[edge.from] = [];
+            }
+            if (!adjacencyList[edge.to]) {
+                adjacencyList[edge.to] = [];
+            }
+            adjacencyList[edge.from].push(edge.to);
+            adjacencyList[edge.to].push(edge.from);
+        });
+
+        const isValidTopology = Object.values(adjacencyList).every(connections => connections.length === 2);
+
+        const isValidDeviceCount = pcCount === 10 && routerCount === 2;
+
+        return { isValidTopology, isValidDeviceCount, pcCount, routerCount };
+    };
+
+    const validatePolicies = (devicePolicies) => {
+        const validDevices = Object.keys(devicePolicies).filter(ip => ip.includes('.'));
+
+        const fileTransferPCs = validDevices.filter(ip =>
+            devicePolicies[ip].accessControl.includes('File Transfer Access')).length;
+
+        const untrustedIPsBlocked = validDevices.every(ip =>
+            devicePolicies[ip].firewall.includes('Block Untrusted IP'));
+
+        const allDevicesAllowWebTraffic = validDevices.every(ip =>
+            devicePolicies[ip].firewall.includes('Allow Web Traffic'));
+
+        return fileTransferPCs === 5 && untrustedIPsBlocked && allDevicesAllowWebTraffic;
+    };
+
+    const handleRunSimulation = () => {
+        setIsSimulationRunning(true);
+        setProgress(0);
+
+        const interval = setInterval(() => {
+            setProgress(oldProgress => {
+                if (oldProgress >= 100) {
+                    clearInterval(interval);
+                    setIsSimulationRunning(false);
+
+                    const nodesData = nodes.current.get();
+                    const edgesData = edges.current.get();
+
+                    const isCanvasEmpty = nodesData.length === 0;
+
+                    if (isCanvasEmpty) {
+                        setShowSimulationModal(true);
+                        setErrorMessages([
+                            'The canvas is empty. Please add devices before running the simulation.'
+                        ]);
+                        setSuccessMessages([]);
+                        return;
+                    }
+
+                    const allDevicesHaveIP = nodesData.every(node => node.ip);
+
+                    if (!allDevicesHaveIP) {
+                        setShowSimulationModal(true);
+                        setErrorMessages([
+                            'Please assign IP addresses to all devices before running the simulation.'
+                        ]);
+                        setSuccessMessages([]);
+                        return;
+                    }
+
+                    const validNodes = nodesData.filter(node => deviceIPs[node.id]);
+
+                    const { isValidTopology, isValidDeviceCount, pcCount, routerCount } = validateRingTopology(validNodes, edgesData);
+                    const arePoliciesValid = validatePolicies(devicePolicies);
+
+                    const errorMessages = [];
+                    const successMessages = [];
+
+                    if (isValidDeviceCount) {
+                        successMessages.push(`Device count is correct! ${pcCount} PCs and ${routerCount} Routers found.`);
+                    } else {
+                        errorMessages.push(`Incorrect device count! Expected 10 PCs and 2 Routers, but found ${pcCount} PCs and ${routerCount} Routers.`);
+                    }
+
+                    if (isValidTopology) {
+                        successMessages.push('The Topology is correct!');
+                    } else {
+                        errorMessages.push('Incorrect Topology!');
+                    }
+
+                    if (arePoliciesValid) {
+                        successMessages.push('Policies are correctly applied!');
+                    } else {
+                        errorMessages.push('Policies are not correctly applied.');
+                    }
+
+                    if (isValidDeviceCount && isValidTopology && arePoliciesValid) {
+                        successMessages.push('Well Done! The scenario conditions are met.');
+                    }
+
+                    setErrorMessages(errorMessages);
+                    setSuccessMessages(successMessages);
+                    setShowSimulationModal(true);
+                } else {
+                    return oldProgress + 10;
+                }
+            });
+        }, 300);
+    };
+
+    const handleResetSimulation = () => {
+        nodes.current.clear();
+        edges.current.clear();
+        setDeviceIPs({});
+        setDevicePolicies({});
+        setSelectedNodes([]);
+        setSelectedDevice(null);
+        setShowAlert({ show: true, message: 'Simulation reset successfully!', type: 'success' });
+    };
+
+    const handleStopSimulation = () => {
+        setIsSimulationRunning(false);
+        setProgress(0);
+    };
 
     return (
         <div className="font-montserrat text-stone-600 flex flex-col p-3 bg-gray-100">
@@ -351,10 +508,10 @@ export default function ScenarioOne() {
                     <div className="flex justify-between items-center">
                         <div className="text-stone-600 flex">
                             <div className='p-2 font-semibold'>
-                                {selectedNodes.length} node{selectedNodes.length !== 1 ? 's' : ''} Nodes selected
+                                {selectedNodes.length} node{selectedNodes.length !== 1 ? 's' : ''} selected
                             </div>
                             <Button onClick={resetSelection} color="gray"
-                                className='text-stone-600 border-stone-400 shadow-md 
+                                className='ml-2 text-stone-600 border-stone-400 shadow-md 
                             transform hover:scale-105 active:scale-100 transition duration-300'>
                                 <IoArrowUndo />
                             </Button>
@@ -385,7 +542,7 @@ export default function ScenarioOne() {
                     <Card className="w-full h-[60%] rounded-lg shadow-md">
                         <h2 className="text-lg font-semibold text-center">Policies Configuration</h2>
                         <div>
-                            <p className="text-center text-sm font-semibold">Device Selected : {selectedDevice || 'None'}</p>
+                            <p className="text-center text-sm font-semibold">Device : {selectedDevice || 'None'}</p>
                         </div>
                         {/* Access Control Policy */}
                         <Dropdown color="gray" style={{ width: '100%' }} label="Access Control" dismissOnClick={false}>
@@ -419,7 +576,7 @@ export default function ScenarioOne() {
                             </Dropdown.Item>
                         </Dropdown>
 
-                        {/* QoS Policy */}
+                        {/* Quality of Service Policy */}
                         <Dropdown color="gray" style={{ width: '100%' }} label="Quality of Service" dismissOnClick={false}>
                             <Dropdown.Item>
                                 <Checkbox
@@ -490,23 +647,44 @@ export default function ScenarioOne() {
                         </Button>
                     </Card>
 
-                    <Card className="w-full h-[40%] rounded-lg shadow-md">
-                        <Button gradientMonochrome="info" className='text-stone-200 border-stone-400 shadow-md
+                    <Card className="w-full h-[25%] rounded-lg shadow-md">
+                        <Button onClick={handleResetSimulation} gradientMonochrome="info"
+                            className='text-stone-200 border-stone-400 shadow-md
                             transform hover:scale-105 active:scale-100 transition duration-300'>
                             Reset Simulation
                         </Button>
-                        <Button gradientMonochrome="failure" className='text-stone-200 border-stone-400 shadow-md
-                            transform hover:scale-105 active:scale-100 transition duration-300'>
-                            Stop Simulation
-                        </Button>
-                        <Button gradientMonochrome="success" className='text-stone-200 border-stone-400 shadow-md 
+                        <Button onClick={handleRunSimulation}
+                            gradientMonochrome="success" className='text-stone-200 border-stone-400 shadow-md 
                             transform hover:scale-105 active:scale-100 transition duration-300'>
                             Start Simulation
                         </Button>
                     </Card>
+
+                    {/* Simulation Progress Bar */}
+                    {isSimulationRunning && (
+                        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50">
+                            <div className="w-1/3 bg-white p-4 rounded shadow-lg">
+                                <p className="text-lg font-semibold text-center">Simulation in Progress</p>
+                                <div className="w-full bg-gray-200 rounded h-2 mt-2">
+                                    <div
+                                        className="bg-stone-500 h-2 rounded"
+                                        style={{ width: `${progress}%` }}
+                                    />
+                                </div>
+                                <div className='flex justify-end mt-4'>
+                                    <Button onClick={handleStopSimulation} gradientMonochrome="failure"
+                                        className='text-stone-200 border-stone-400 shadow-md
+                                    transform hover:scale-105 active:scale-100 transition duration-300'>
+                                        Stop Simulation
+                                    </Button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div >
 
+            {/* Delete Nodes Modal */}
             <Modal className='font-montserrat' size='md' show={showModal} onClose={() => setShowModal(false)} popup>
                 <Modal.Header />
                 <Modal.Body className='text-stone-600'>
@@ -532,7 +710,7 @@ export default function ScenarioOne() {
             </Modal>
 
             {/* IP Editing Modal */}
-            <Modal show={showIpModal} size="md" popup={true} onClose={() => setShowIpModal(false)}>
+            <Modal className='font-montserrat' show={showIpModal} size="md" popup={true} onClose={() => setShowIpModal(false)}>
                 <Modal.Header className='bg-gradient-to-r from-teal-400 from-10% to-teal-700 to-90%'> Assign IP Address </Modal.Header>
                 <Modal.Body>
                     <div className='text-center mt-5'>
@@ -556,6 +734,33 @@ export default function ScenarioOne() {
                                 transform hover:scale-105 active:scale-100 transition duration-300'>
                             Save
                         </Button>
+                    </div>
+                </Modal.Body>
+            </Modal>
+
+            {/* Simulation Modal */}
+            <Modal className='font-montserrat' show={showSimulationModal} onClose={() => setShowSimulationModal(false)}>
+                <Modal.Header className='bg-gradient-to-r from-teal-400 from-10% to-teal-700 to-90%'>Simulation Result</Modal.Header>
+                <Modal.Body>
+                    {errorMessages.length > 0 && (
+                        <ul className='list-disc list-inside text-red-600'>
+                            {errorMessages.map((msg, index) => (
+                                <li key={index}>{msg}</li>
+                            ))}
+                        </ul>
+                    )}
+                    {successMessages.length > 0 && (
+                        <ul className='list-disc list-inside text-green-600'>
+                            {successMessages.map((msg, index) => (
+                                <li key={index}>{msg}</li>
+                            ))}
+                        </ul>
+                    )}
+
+                    <div className='flex justify-end mt-4'>
+                        <Button className='text-stone-100 border-stone-400 shadow-md 
+                            transform hover:scale-105 active:scale-100 transition duration-300'
+                            gradientMonochrome="teal" onClick={() => setShowSimulationModal(false)}>Close</Button>
                     </div>
                 </Modal.Body>
             </Modal>
