@@ -17,8 +17,8 @@ const page = () => {
             height={280}
             className='rounded'
           />
-          <h5 className='text-2xl font-medium text-stone-600'> Topology Builder </h5>
-          <p className='text-stone-600'> Start creating your Network Topology Architecture </p>
+          <h5 className='text-2xl font-medium text-stone-600'> Topology Sandbox </h5>
+          <p className='text-stone-600'> Let your creativity run wild </p>
           <Button gradientMonochrome='teal'
             className='shadow-md transform hover:scale-105 active:scale-100 transition duration-300'
             as={Link} href='/builder'>

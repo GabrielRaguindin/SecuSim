@@ -4,7 +4,7 @@ export default function TopolgyCanvas() {
   return (
     <div>
       <h1 className="text-2xl font-bold text-stone-600 text-center py-4 font-montserrat"> 
-          Topology Builder </h1>
+          Topology Sandbox </h1>
       <TopologyBuilder />
     </div>
   )

@@ -1,43 +1,51 @@
 "use client"
 
+// Imported Modules
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { Network } from 'vis-network';
 import { DataSet } from 'vis-data';
 
+// Imported Icons
 import { IoArrowUndo } from "react-icons/io5";
 import { FaTrash } from 'react-icons/fa6';
 import { FaLink } from 'react-icons/fa';
 import { HiOutlineExclamationCircle } from 'react-icons/hi';
 
+// Imported UI Components
 import { Card, Button, Checkbox, Dropdown, Label, Tooltip, Modal, TextInput, Alert } from 'flowbite-react'
 
 export default function ScenarioOne() {
 
+    // Network Variables
     const networkRef = useRef(null);
     const network = useRef(null);
     const nodes = useRef(new DataSet([]));
     const edges = useRef(new DataSet([]));
 
+    // State Variables (Selections)
+    const [selectedDevice, setSelectedDevice] = useState(null);
     const [selectedNodes, setSelectedNodes] = useState([]);
+
+    // State Variables (Modals & Alerts)
     const [showAlert, setShowAlert] = useState({ show: false, message: '', type: '' });
     const [showModal, setShowModal] = useState(false);
     const [showIpModal, setShowIpModal] = useState(false);
     const [showSimulationModal, setShowSimulationModal] = useState(false);
+
+    // State Variables (Simulation Messages)
     const [errorMessages, setErrorMessages] = useState([]);
     const [successMessages, setSuccessMessages] = useState([]);
+
+    // State Variables (Simulation Settings)
     const [editingNode, setEditingNode] = useState(null);
     const [fakeIpAddress, setFakeIpAddress] = useState('');
     const [deviceIPs, setDeviceIPs] = useState({});
     const [devicePolicies, setDevicePolicies] = useState({});
-    const [selectedDevice, setSelectedDevice] = useState(null);
     const [isSimulationRunning, setIsSimulationRunning] = useState(false);
     const [progress, setProgress] = useState(0);
 
-    const resetSelection = () => {
-        setSelectedNodes([]);
-    };
-
+    // Use Effect for Network
     useEffect(() => {
         const container = networkRef.current;
         const data = {
@@ -90,6 +98,7 @@ export default function ScenarioOne() {
         };
     }, []);
 
+    // Use Effect for Alerts
     useEffect(() => {
         let timeout;
         if (showAlert.show) {
@@ -100,10 +109,7 @@ export default function ScenarioOne() {
         return () => clearTimeout(timeout);
     }, [showAlert]);
 
-    const handleDragStart = (event, deviceType) => {
-        event.dataTransfer.setData('deviceType', deviceType);
-    };
-
+    // Use Effect for Device IPs
     useEffect(() => {
         const nodesData = nodes.current.get();
         const ips = {};
@@ -115,6 +121,7 @@ export default function ScenarioOne() {
         setDeviceIPs(ips);
     }, []);
 
+    // Use Effect for Device Selection
     useEffect(() => {
         network.current.on('selectedNode', (params) => {
             if (params.nodes.length === 1) {
@@ -124,6 +131,15 @@ export default function ScenarioOne() {
             }
         })
     })
+
+    // Functions
+    const resetSelection = () => {
+        setSelectedNodes([]);
+    };
+
+    const handleDragStart = (event, deviceType) => {
+        event.dataTransfer.setData('deviceType', deviceType);
+    };
 
     const handleDrop = (event) => {
         event.preventDefault();
@@ -175,6 +191,21 @@ export default function ScenarioOne() {
         }
     };
 
+    const handleConnectNodes = () => {
+        if (selectedNodes.length === 2) {
+            const [from, to] = selectedNodes;
+            const newEdge = {
+                id: `${from}-${to}`,
+                from: from,
+                to: to,
+            };
+            edges.current.add(newEdge);
+            setSelectedNodes([]);
+        } else {
+            setShowAlert({ show: true, message: 'Please select exactly two nodes to connect', type: 'warning' });
+        }
+    };
+
     const handleDeleteNodes = () => {
         setShowModal(true);
     };
@@ -196,21 +227,6 @@ export default function ScenarioOne() {
             setShowAlert({ show: true, message: 'No node selected for deletion', type: 'warning' });
         }
         setShowModal(false);
-    };
-
-    const handleConnectNodes = () => {
-        if (selectedNodes.length === 2) {
-            const [from, to] = selectedNodes;
-            const newEdge = {
-                id: `${from}-${to}`,
-                from: from,
-                to: to,
-            };
-            edges.current.add(newEdge);
-            setSelectedNodes([]);
-        } else {
-            setShowAlert({ show: true, message: 'Please select exactly two nodes to connect', type: 'warning' });
-        }
     };
 
     const isIPUnique = (ip) => {
@@ -274,6 +290,22 @@ export default function ScenarioOne() {
                     }
                 };
             });
+        }
+    };
+
+    const handlePolicySave = () => {
+        if (selectedDevice) {
+            setDevicePolicies(prev => ({
+                ...prev,
+                [selectedDevice]: {
+                    accessControl: devicePolicies[selectedDevice]?.accessControl || [],
+                    qos: devicePolicies[selectedDevice]?.qos || [],
+                    firewall: devicePolicies[selectedDevice]?.firewall || [],
+                }
+            }));
+            setShowAlert({ show: true, message: 'Policies applied successfully!', type: 'success' });
+        } else {
+            setShowAlert({ show: true, message: 'No device selected. Please select a device first.', type: 'warning' });
         }
     };
 
@@ -413,23 +445,6 @@ export default function ScenarioOne() {
         setProgress(0);
     };
 
-    const handlePolicySave = () => {
-        if (selectedDevice) {
-            setDevicePolicies(prev => ({
-                ...prev,
-                [selectedDevice]: {
-                    accessControl: devicePolicies[selectedDevice]?.accessControl || [],
-                    qos: devicePolicies[selectedDevice]?.qos || [],
-                    firewall: devicePolicies[selectedDevice]?.firewall || [],
-                }
-            }));
-            setShowAlert({ show: true, message: 'Policies applied successfully!', type: 'success' });
-        } else {
-            setShowAlert({ show: true, message: 'No device selected. Please select a device first.', type: 'warning' });
-        }
-    };
-
-
     return (
         <div className="font-montserrat text-stone-600 flex flex-col p-3 bg-gray-100">
             {/* Main Content Area */}
@@ -561,7 +576,7 @@ export default function ScenarioOne() {
                             </Dropdown.Item>
                         </Dropdown>
 
-                        {/* QoS Policy */}
+                        {/* Quality of Service Policy */}
                         <Dropdown color="gray" style={{ width: '100%' }} label="Quality of Service" dismissOnClick={false}>
                             <Dropdown.Item>
                                 <Checkbox
@@ -645,6 +660,7 @@ export default function ScenarioOne() {
                         </Button>
                     </Card>
 
+                    {/* Simulation Progress Bar */}
                     {isSimulationRunning && (
                         <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50">
                             <div className="w-1/3 bg-white p-4 rounded shadow-lg">
@@ -668,6 +684,7 @@ export default function ScenarioOne() {
                 </div>
             </div >
 
+            {/* Delete Nodes Modal */}
             <Modal className='font-montserrat' size='md' show={showModal} onClose={() => setShowModal(false)} popup>
                 <Modal.Header />
                 <Modal.Body className='text-stone-600'>
@@ -739,10 +756,13 @@ export default function ScenarioOne() {
                             ))}
                         </ul>
                     )}
+
+                    <div className='flex justify-end mt-4'>
+                        <Button className='text-stone-100 border-stone-400 shadow-md 
+                            transform hover:scale-105 active:scale-100 transition duration-300'
+                            gradientMonochrome="teal" onClick={() => setShowSimulationModal(false)}>Close</Button>
+                    </div>
                 </Modal.Body>
-                <Modal.Footer className='flex justify-end'>
-                    <Button gradientMonochrome="teal" onClick={() => setShowSimulationModal(false)}>Close</Button>
-                </Modal.Footer>
             </Modal>
         </div >
     );
