@@ -28,6 +28,7 @@ export default function FirewallPolicy() {
             <PolicyModal
                 title="Firewall Policy"
                 description={"Firewalls are typically used to gate the borders of a private network or its host devices. As such, firewalls are one security tool in the broader category of user access control."}
+                descriptionTwo={"Firewalls represent one component of a strategy to combat malicious activities and assaults on computing resources and network-accessible information."}
                 settings={firewallSettings}
                 setSettings={setFirewallSettings}
                 openModal={openModalFirewall}

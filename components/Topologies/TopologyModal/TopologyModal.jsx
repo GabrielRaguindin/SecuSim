@@ -26,10 +26,12 @@ export default function TopologyModal({ title, description, visualRep, openModal
         <Modal className="font-montserrat" show={openModal} onClose={() => setOpenModal(false)}>
             <Modal.Header className="bg-gradient-to-r from-teal-400 from-10% to-teal-700 to-90%">{title}</Modal.Header>
             <Modal.Body>
-                <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                <h3 className='text-stone-600 font-bold mb-2'>Definition</h3>
+                <p className="text-stone-600">
                     {description}
                 </p>
-                <div>
+                <div className="mt-3">
+                    <h3 className='text-stone-600 font-bold mb-3'>Visual Representation</h3>
                     {visualRep}
                 </div>
                 <div className="flex justify-end mt-5">

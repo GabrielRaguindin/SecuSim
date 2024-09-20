@@ -27,7 +27,8 @@ export default function QualityOfService() {
 
             <PolicyModal
                 title="Quality of Service Policy"
-                description={"QoS is typically applied to networks that carry traffic for resource-intensive systems. Common services for which it is required include data transmission, online gaming, streaming media, and Voice over IP."}
+                description={"Quality of Service is typically applied to networks that carry traffic for resource-intensive systems. Common services for which it is required include data transmission, online gaming, streaming media, and Voice over IP."}
+                descriptionTwo={"This enables an organization to prioritize traffic and resources to guarantee the promised performance of a specific application or service."}
                 settings={qualitySettings}
                 setSettings={setQualitySettings}
                 openModal={openModalQuality}
