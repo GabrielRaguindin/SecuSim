@@ -20,7 +20,7 @@ export default function PolicyCard({
                     className='flex w-[30%] shadow-md transform hover:scale-105 active:scale-100 transition duration-300'
                     onClick={onViewDetailsClick}
                 >
-                    View Details
+                    Explore More!
                 </Button>
             </div>
         </Card>

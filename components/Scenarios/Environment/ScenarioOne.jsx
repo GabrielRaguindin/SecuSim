@@ -13,7 +13,7 @@ import { FaLink } from 'react-icons/fa';
 import { HiOutlineExclamationCircle } from 'react-icons/hi';
 
 // Imported UI Components
-import { Card, Button, Checkbox, Dropdown, Label, Tooltip, Modal, TextInput, Alert } from 'flowbite-react'
+import { Card, Button, Checkbox, Dropdown, Label, Tooltip, Modal, TextInput, Alert, Progress } from 'flowbite-react'
 
 export default function ScenarioOne() {
 
@@ -373,7 +373,7 @@ export default function ScenarioOne() {
                     if (isCanvasEmpty) {
                         setShowSimulationModal(true);
                         setErrorMessages([
-                            'The canvas is empty. Please add devices before running the simulation.'
+                            'The canvas is empty. Please add devices first.'
                         ]);
                         setSuccessMessages([]);
                         return;
@@ -384,7 +384,7 @@ export default function ScenarioOne() {
                     if (!allDevicesHaveIP) {
                         setShowSimulationModal(true);
                         setErrorMessages([
-                            'Please assign IP addresses to all devices before running the simulation.'
+                            'All devices placed must have a unique IP address.'
                         ]);
                         setSuccessMessages([]);
                         return;
@@ -424,10 +424,10 @@ export default function ScenarioOne() {
                     setSuccessMessages(successMessages);
                     setShowSimulationModal(true);
                 } else {
-                    return oldProgress + 10;
+                    return oldProgress + 1;
                 }
             });
-        }, 300);
+        }, 100);
     };
 
     const handleResetSimulation = () => {
@@ -665,11 +665,15 @@ export default function ScenarioOne() {
                         <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50">
                             <div className="w-1/3 bg-white p-4 rounded shadow-lg">
                                 <p className="text-lg font-semibold text-center">Simulation in Progress</p>
-                                <div className="w-full bg-gray-200 rounded h-2 mt-2">
-                                    <div
-                                        className="bg-stone-500 h-2 rounded"
-                                        style={{ width: `${progress}%` }}
-                                    />
+                                <div className="w-full h-full bg-gray-200 rounded h-2 mt-3">
+                                    <div className="mt-2">
+                                        <Progress
+                                            progress={progress}
+                                            color="teal"
+                                            size="lg"
+                                            labelProgress
+                                        />
+                                    </div>
                                 </div>
                                 <div className='flex justify-end mt-4'>
                                     <Button onClick={handleStopSimulation} gradientMonochrome="failure"

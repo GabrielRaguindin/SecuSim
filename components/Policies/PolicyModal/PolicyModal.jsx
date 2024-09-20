@@ -3,7 +3,7 @@
 import { Button, Checkbox, Label, Modal } from "flowbite-react";
 import { useEffect } from "react";
 
-export default function PolicyModal({ title, description, settings, setSettings, openModal, setOpenModal, handleSavePolicy, }) {
+export default function PolicyModal({ title, description, descriptionTwo, settings, setSettings, openModal, setOpenModal, handleSavePolicy, }) {
     const handleChange = (setting) => (e) => {
         setSettings({ ...settings, [setting]: e.target.checked });
     };
@@ -30,7 +30,9 @@ export default function PolicyModal({ title, description, settings, setSettings,
         <Modal className='font-montserrat' show={openModal} onClose={() => setOpenModal(false)}>
             <Modal.Header className='bg-gradient-to-r from-teal-400 from-10% to-teal-700 to-90%'>{title}</Modal.Header>
             <Modal.Body>
+                <h3 className='text-stone-600 font-bold mb-2'>Definition</h3>
                 <p className='text-stone-600 mb-3'>{description}</p>
+                <p className='text-stone-600 mb-3'>{descriptionTwo}</p>
                 <h3 className='text-stone-600 font-bold mb-3'>Controls</h3>
                 <div className="space-y-3 ml-5">
                     {Object.keys(settings).map((key) => (

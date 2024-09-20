@@ -29,6 +29,7 @@ export default function AccessControl() {
             <PolicyModal
                 title="Access Control Policy"
                 description={"Considered a key component in a security plan, access control policies refer to rules or policies that limit unauthorized physical or logical access to sensitive data."}
+                descriptionTwo={"These are sets of policies, instructions, and restrictions that are in place which specify who can access your data, when they can do so, and up to which level."}
                 settings={accessSettings}
                 setSettings={setAccessSettings}
                 openModal={openModalAccess}
