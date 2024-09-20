@@ -44,6 +44,8 @@ export default function ScenarioOne() {
     const [devicePolicies, setDevicePolicies] = useState({});
     const [isSimulationRunning, setIsSimulationRunning] = useState(false);
     const [progress, setProgress] = useState(0);
+    const [timer, setTimer] = useState(300);
+    const [isTimerRunning, setIsTimerRunning] = useState(false);
 
     // Use Effect for Network
     useEffect(() => {
@@ -135,6 +137,11 @@ export default function ScenarioOne() {
     // Functions
     const resetSelection = () => {
         setSelectedNodes([]);
+    };
+
+    const isValidIP = (ip) => {
+        const regex = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){2}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+        return regex.test(ip);
     };
 
     const handleDragStart = (event, deviceType) => {
@@ -241,6 +248,10 @@ export default function ScenarioOne() {
 
     const saveFakeIP = () => {
         if (editingNode) {
+            if (!isValidIP(fakeIpAddress)) {
+                setShowAlert({ show: true, message: 'Invalid IP Address. Please enter a valid format.', type: 'failure' });
+                return;
+            }
             if (!isIPUnique(fakeIpAddress)) {
                 setShowAlert({ show: true, message: 'IP address already in use. Please choose a different IP.', type: 'warning' });
                 return;
@@ -355,82 +366,109 @@ export default function ScenarioOne() {
         return fileTransferPCs === 5 && untrustedIPsBlocked && allDevicesAllowWebTraffic;
     };
 
-    const handleRunSimulation = () => {
-        setIsSimulationRunning(true);
-        setProgress(0);
+    const intervalRef = useRef({
+        timer: null,
+        progressBar: null
+    });
 
-        const interval = setInterval(() => {
+    const handleRunSimulation = () => {
+        setIsTimerRunning(true);
+        setProgress(0);
+        setTimer(300);
+
+        const timerInterval = setInterval(() => {
+            setTimer(prev => {
+                if (prev <= 1) {
+                    clearInterval(timerInterval);
+                    setIsTimerRunning(false);
+                    setTimeout(startProgressBar, 300);
+                    return 0;
+                }
+                return prev - 1;
+            });
+        }, 1000);
+
+        intervalRef.current.timer = timerInterval;
+    };
+
+    const startProgressBar = () => {
+        setIsSimulationRunning(true);
+        const progressBarInterval = setInterval(() => {
             setProgress(oldProgress => {
                 if (oldProgress >= 100) {
-                    clearInterval(interval);
+                    clearInterval(progressBarInterval);
                     setIsSimulationRunning(false);
-
-                    const nodesData = nodes.current.get();
-                    const edgesData = edges.current.get();
-
-                    const isCanvasEmpty = nodesData.length === 0;
-
-                    if (isCanvasEmpty) {
-                        setShowSimulationModal(true);
-                        setErrorMessages([
-                            'The canvas is empty. Please add devices first.'
-                        ]);
-                        setSuccessMessages([]);
-                        return;
-                    }
-
-                    const allDevicesHaveIP = nodesData.every(node => node.ip);
-
-                    if (!allDevicesHaveIP) {
-                        setShowSimulationModal(true);
-                        setErrorMessages([
-                            'All devices placed must have a unique IP address.'
-                        ]);
-                        setSuccessMessages([]);
-                        return;
-                    }
-
-                    const validNodes = nodesData.filter(node => deviceIPs[node.id]);
-
-                    const { isValidTopology, isValidDeviceCount, pcCount, routerCount } = validateRingTopology(validNodes, edgesData);
-                    const arePoliciesValid = validatePolicies(devicePolicies);
-
-                    const errorMessages = [];
-                    const successMessages = [];
-
-                    if (isValidDeviceCount) {
-                        successMessages.push(`Device count is correct! ${pcCount} PCs and ${routerCount} Routers found.`);
-                    } else {
-                        errorMessages.push(`Incorrect device count! Expected 10 PCs and 2 Routers, but found ${pcCount} PCs and ${routerCount} Routers.`);
-                    }
-
-                    if (isValidTopology) {
-                        successMessages.push('The Topology is correct!');
-                    } else {
-                        errorMessages.push('Incorrect Topology!');
-                    }
-
-                    if (arePoliciesValid) {
-                        successMessages.push('Policies are correctly applied!');
-                    } else {
-                        errorMessages.push('Policies are not correctly applied.');
-                    }
-
-                    if (isValidDeviceCount && isValidTopology && arePoliciesValid) {
-                        successMessages.push('Well Done! The scenario conditions are met.');
-                    }
-
-                    setErrorMessages(errorMessages);
-                    setSuccessMessages(successMessages);
-                    setShowSimulationModal(true);
+                    handleSimulationResult();
+                    return oldProgress;
                 } else {
                     return oldProgress + 1;
                 }
             });
         }, 100);
+
+        intervalRef.current.progressBar = progressBarInterval;
+    };
+
+    // Handle simulation results as before
+    const handleSimulationResult = () => {
+        const nodesData = nodes.current.get();
+        const edgesData = edges.current.get();
+
+        const isCanvasEmpty = nodesData.length === 0;
+
+        if (isCanvasEmpty) {
+            setErrorMessages(['The canvas is empty. Please add devices first.']);
+            setSuccessMessages([]);
+            setShowSimulationModal(true);
+            return;
+        }
+
+        const allDevicesHaveIP = nodesData.every(node => node.ip);
+
+        if (!allDevicesHaveIP) {
+            setErrorMessages(['All devices placed must have a unique IP address.']);
+            setSuccessMessages([]);
+            setShowSimulationModal(true);
+            return;
+        }
+
+        const validNodes = nodesData.filter(node => deviceIPs[node.id]);
+
+        const { isValidTopology, isValidDeviceCount, pcCount, routerCount } = validateRingTopology(validNodes, edgesData);
+        const arePoliciesValid = validatePolicies(devicePolicies);
+
+        const errorMessages = [];
+        const successMessages = [];
+
+        if (isValidDeviceCount) {
+            successMessages.push(`Device count is correct! ${pcCount} PCs and ${routerCount} Routers found.`);
+        } else {
+            errorMessages.push(`Incorrect device count! Expected 10 PCs and 2 Routers, but found ${pcCount} PCs and ${routerCount} Routers.`);
+        }
+
+        if (isValidTopology) {
+            successMessages.push('The Topology is correct!');
+        } else {
+            errorMessages.push('Incorrect Topology!');
+        }
+
+        if (arePoliciesValid) {
+            successMessages.push('Policies are correctly applied!');
+        } else {
+            errorMessages.push('Policies are not correctly applied.');
+        }
+
+        if (isValidDeviceCount && isValidTopology && arePoliciesValid) {
+            successMessages.push('Well Done! The scenario conditions are met.');
+        }
+
+        setErrorMessages(errorMessages);
+        setSuccessMessages(successMessages);
+        setShowSimulationModal(true);
     };
 
     const handleResetSimulation = () => {
+        setShowSimulationModal(false);
         nodes.current.clear();
         edges.current.clear();
         setDeviceIPs({});
@@ -438,11 +476,10 @@ export default function ScenarioOne() {
         setSelectedNodes([]);
         setSelectedDevice(null);
         setShowAlert({ show: true, message: 'Simulation reset successfully!', type: 'success' });
-    };
-
-    const handleStopSimulation = () => {
-        setIsSimulationRunning(false);
-        setProgress(0);
+        setTimer(300);
+        setIsTimerRunning(false);
+        clearInterval(intervalRef.current.timer);
+        clearInterval(intervalRef.current.progressBar);
     };
 
     return (
@@ -545,7 +582,7 @@ export default function ScenarioOne() {
                             <p className="text-center text-sm font-semibold">Device : {selectedDevice || 'None'}</p>
                         </div>
                         {/* Access Control Policy */}
-                        <Dropdown color="gray" style={{ width: '100%' }} label="Access Control" dismissOnClick={false}>
+                        <Dropdown outline gradientDuoTone="greenToBlue" style={{ width: '100%' }} label="Access Control" dismissOnClick={false}>
                             <Dropdown.Item>
                                 <Checkbox
                                     checked={devicePolicies[selectedDevice]?.accessControl.includes('Remote Desktop Access') || false}
@@ -577,7 +614,7 @@ export default function ScenarioOne() {
                         </Dropdown>
 
                         {/* Quality of Service Policy */}
-                        <Dropdown color="gray" style={{ width: '100%' }} label="Quality of Service" dismissOnClick={false}>
+                        <Dropdown outline gradientDuoTone="greenToBlue" style={{ width: '100%' }} label="Quality of Service" dismissOnClick={false}>
                             <Dropdown.Item>
                                 <Checkbox
                                     checked={devicePolicies[selectedDevice]?.qos.includes('VoiP') || false}
@@ -609,7 +646,7 @@ export default function ScenarioOne() {
                         </Dropdown>
 
                         {/* Firewall Policy */}
-                        <Dropdown color='gray' style={{ width: '100%' }} label="Firewall" dismissOnClick={false}>
+                        <Dropdown outline gradientDuoTone="greenToBlue" style={{ width: '100%' }} label="Firewall" dismissOnClick={false}>
                             <Dropdown.Item>
                                 <Checkbox
                                     checked={devicePolicies[selectedDevice]?.firewall.includes('Block Untrusted IP') || false}
@@ -648,16 +685,23 @@ export default function ScenarioOne() {
                     </Card>
 
                     <Card className="w-full h-[25%] rounded-lg shadow-md">
-                        <Button onClick={handleResetSimulation} gradientMonochrome="info"
+                        {isTimerRunning && (
+                            <div className="text-center">
+                                <p className="font-semibold">Time Left: {timer} seconds</p>
+                            </div>
+                        )}
+                        <Button onClick={handleResetSimulation} gradientMonochrome="teal"
                             className='text-stone-200 border-stone-400 shadow-md
                             transform hover:scale-105 active:scale-100 transition duration-300'>
                             Reset Simulation
                         </Button>
-                        <Button onClick={handleRunSimulation}
-                            gradientMonochrome="success" className='text-stone-200 border-stone-400 shadow-md 
-                            transform hover:scale-105 active:scale-100 transition duration-300'>
-                            Start Simulation
-                        </Button>
+                        {!isTimerRunning && (
+                            <Button onClick={handleRunSimulation}
+                                gradientMonochrome="success" className='text-stone-200 border-stone-400 shadow-md 
+                                transform hover:scale-105 active:scale-100 transition duration-300'>
+                                Start Simulation
+                            </Button>
+                        )}
                     </Card>
 
                     {/* Simulation Progress Bar */}
@@ -674,13 +718,6 @@ export default function ScenarioOne() {
                                             labelProgress
                                         />
                                     </div>
-                                </div>
-                                <div className='flex justify-end mt-4'>
-                                    <Button onClick={handleStopSimulation} gradientMonochrome="failure"
-                                        className='text-stone-200 border-stone-400 shadow-md
-                                    transform hover:scale-105 active:scale-100 transition duration-300'>
-                                        Stop Simulation
-                                    </Button>
                                 </div>
                             </div>
                         </div>
@@ -764,7 +801,7 @@ export default function ScenarioOne() {
                     <div className='flex justify-end mt-4'>
                         <Button className='text-stone-100 border-stone-400 shadow-md 
                             transform hover:scale-105 active:scale-100 transition duration-300'
-                            gradientMonochrome="teal" onClick={() => setShowSimulationModal(false)}>Close</Button>
+                            gradientMonochrome="teal" onClick={handleResetSimulation}>Try Again!</Button>
                     </div>
                 </Modal.Body>
             </Modal>
