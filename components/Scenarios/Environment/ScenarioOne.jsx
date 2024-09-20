@@ -44,7 +44,7 @@ export default function ScenarioOne() {
     const [devicePolicies, setDevicePolicies] = useState({});
     const [isSimulationRunning, setIsSimulationRunning] = useState(false);
     const [progress, setProgress] = useState(0);
-    const [timer, setTimer] = useState(60); // Initial timer set to 60 seconds
+    const [timer, setTimer] = useState(300);
     const [isTimerRunning, setIsTimerRunning] = useState(false);
 
     // Use Effect for Network
@@ -374,14 +374,14 @@ export default function ScenarioOne() {
     const handleRunSimulation = () => {
         setIsTimerRunning(true);
         setProgress(0);
-        setTimer(3); // Set the initial timer value
+        setTimer(300);
 
         const timerInterval = setInterval(() => {
             setTimer(prev => {
                 if (prev <= 1) {
                     clearInterval(timerInterval);
                     setIsTimerRunning(false);
-                    setTimeout(startProgressBar, 300); // Start the progress bar after a slight delay
+                    setTimeout(startProgressBar, 300);
                     return 0;
                 }
                 return prev - 1;
@@ -398,8 +398,8 @@ export default function ScenarioOne() {
                 if (oldProgress >= 100) {
                     clearInterval(progressBarInterval);
                     setIsSimulationRunning(false);
-                    handleSimulationResult(); // Handle simulation results
-                    return oldProgress; // Maintain current progress
+                    handleSimulationResult();
+                    return oldProgress;
                 } else {
                     return oldProgress + 1;
                 }
@@ -476,9 +476,7 @@ export default function ScenarioOne() {
         setSelectedNodes([]);
         setSelectedDevice(null);
         setShowAlert({ show: true, message: 'Simulation reset successfully!', type: 'success' });
-
-        // Reset timer and clear interval
-        setTimer(60);
+        setTimer(300);
         setIsTimerRunning(false);
         clearInterval(intervalRef.current.timer);
         clearInterval(intervalRef.current.progressBar);
@@ -689,7 +687,7 @@ export default function ScenarioOne() {
                     <Card className="w-full h-[25%] rounded-lg shadow-md">
                         {isTimerRunning && (
                             <div className="text-center">
-                                <p className="text-lg font-semibold">Time Left: {timer} seconds</p>
+                                <p className="font-semibold">Time Left: {timer} seconds</p>
                             </div>
                         )}
                         <Button onClick={handleResetSimulation} gradientMonochrome="teal"
