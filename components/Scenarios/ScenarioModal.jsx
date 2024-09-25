@@ -3,7 +3,7 @@
 import { Modal, Button } from "flowbite-react";
 import { useEffect } from "react";
 
-export default function ScenarioModal({ title, scenarioDesc, description, openModal, setOpenModal, objOne, objTwo, objThree }) {
+export default function ScenarioModal({ title, scenarioTitle, scenarioDesc, description, openModal, setOpenModal, objOne, objTwo, objThree, objFour }) {
     const handleKeyDown = (e) => {
         if (e.key === 'Escape') {
             setOpenModal(false);
@@ -27,7 +27,11 @@ export default function ScenarioModal({ title, scenarioDesc, description, openMo
             <Modal.Header className="bg-gradient-to-r from-teal-400 from-10% to-teal-700 to-90%">{title}</Modal.Header>
             <Modal.Body>
                 <div className='space-y-2'>
-                    <p className='text-stone-600 font-bold text-lg'> {scenarioDesc} </p>
+                    <p className='text-stone-600 font-bold text-lg'> {scenarioTitle} </p>
+                    <p className="text-stone-600 font-bold"> Scenario : </p>
+                    <p className="text-base leading-relaxed text-gray-600 dark:text-gray-400">
+                        {scenarioDesc}
+                    </p>
                     <p className='text-stone-600 font-bold'> Objective : </p>
                     <p className="text-base leading-relaxed text-gray-600 dark:text-gray-400">
                         {description}
@@ -38,6 +42,7 @@ export default function ScenarioModal({ title, scenarioDesc, description, openMo
                             <li> {objOne} </li>
                             <li> {objTwo} </li>
                             <li> {objThree} </li>
+                            <li> {objFour} </li>
                         </ul>
                     </div>
                 </div>

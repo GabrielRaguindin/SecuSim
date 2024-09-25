@@ -15,7 +15,7 @@ import { HiOutlineExclamationCircle } from 'react-icons/hi';
 // Imported UI Components
 import { Card, Button, Checkbox, Dropdown, Label, Tooltip, Modal, TextInput, Alert, Progress } from 'flowbite-react'
 
-export default function ScenarioOne() {
+export default function ScenarioTwo() {
 
     // Network Variables
     const networkRef = useRef(null);
@@ -49,7 +49,7 @@ export default function ScenarioOne() {
 
     const [started, setStarted] = useState(false);
     // Seconds for timer
-    const [timeRemaining, setTimeRemaining] = useState(300);
+    const [timeRemaining, setTimeRemaining] = useState(240);
 
     useEffect(() => {
         let timer;
@@ -63,7 +63,7 @@ export default function ScenarioOne() {
             timer = setTimeout(() => setTimeRemaining(timeRemaining - 1), 1000);
         } else if (timeRemaining === 0) {
             setStarted(false);
-            setTimeRemaining(300);
+            setTimeRemaining(240);
             runAndReset();
         }
         return () => clearTimeout(timer);
@@ -342,16 +342,21 @@ export default function ScenarioOne() {
         }
     };
 
-    const validateRingTopology = (nodes, edges) => {
+    const validateStarTopology = (nodes, edges) => {
         const adjacencyList = {};
         let pcCount = 0;
+        let hubCount = 0;
         let routerCount = 0;
+        let centerNode = null;
 
         nodes.forEach(node => {
             if (node.label.startsWith('PC')) {
                 pcCount++;
+            } else if (node.label.startsWith('Hub')) {
+                hubCount++;
             } else if (node.label.startsWith('Router')) {
                 routerCount++;
+                centerNode = node.id;
             }
         });
 
@@ -366,27 +371,34 @@ export default function ScenarioOne() {
             adjacencyList[edge.to].push(edge.from);
         });
 
-        const isValidTopology = Object.values(adjacencyList).every(connections => connections.length === 2);
+        const isValidTopology = centerNode && adjacencyList[centerNode] &&
+            adjacencyList[centerNode].length === 8 &&
+            adjacencyList[centerNode].every(connection => {
+                const connectedNode = nodes.find(node => node.id === connection);
+                return connectedNode && (connectedNode.label.startsWith('PC') || connectedNode.label.startsWith('Hub'));
+            });
 
-        const isValidDeviceCount = pcCount === 10 && routerCount === 2;
+        const isValidDeviceCount = pcCount === 6 && hubCount === 2 && routerCount === 1;
 
-        return { isValidTopology, isValidDeviceCount, pcCount, routerCount };
-    };
+        return { isValidTopology, isValidDeviceCount, pcCount, hubCount, routerCount };
+    }
 
     const validatePolicies = (devicePolicies) => {
         const validDevices = Object.keys(devicePolicies).filter(ip => ip.includes('.'));
 
-        const fileTransferPCs = validDevices.filter(ip =>
-            devicePolicies[ip].accessControl.includes('File Transfer Access')).length;
+        const streamingPCs = validDevices.filter(ip =>
+            devicePolicies[ip].qos.includes('Prioritize Streaming') &&
+            devicePolicies[ip].firewall.includes('Allow Web Traffic')).length;
 
-        const untrustedIPsBlocked = validDevices.every(ip =>
-            devicePolicies[ip].firewall.includes('Block Untrusted IP'));
+        const throttledPCs = validDevices.filter(ip =>
+            devicePolicies[ip].qos.includes('Throttle Bulk Data')).length;
 
-        const allDevicesAllowWebTraffic = validDevices.every(ip =>
-            devicePolicies[ip].firewall.includes('Allow Web Traffic'));
+        const outboundTrafficRestricted = validDevices.every(ip =>
+            devicePolicies[ip].firewall.includes('Restrict Outbound Traffic'));
 
-        return fileTransferPCs === 5 && untrustedIPsBlocked && allDevicesAllowWebTraffic;
-    };
+        return streamingPCs === 6 && throttledPCs === 3 && outboundTrafficRestricted;
+
+    }
 
     const StartSimulationTimer = () => {
         setStarted(true);
@@ -432,16 +444,16 @@ export default function ScenarioOne() {
 
                         const validNodes = nodesData.filter((node) => deviceIPs[node.id]);
 
-                        const { isValidTopology, isValidDeviceCount, pcCount, routerCount } = validateRingTopology(validNodes, edgesData);
+                        const { isValidTopology, isValidDeviceCount, pcCount, hubCount, routerCount } = validateStarTopology(validNodes, edgesData);
                         const arePoliciesValid = validatePolicies(devicePolicies);
 
                         const errorMessages = [];
                         const successMessages = [];
 
                         if (isValidDeviceCount) {
-                            successMessages.push(`Device count is correct! ${pcCount} PCs and ${routerCount} Routers found.`);
+                            successMessages.push(`Device count is correct! ${pcCount} PCs, ${hubCount} Hubs, ${routerCount} Routers found.`);
                         } else {
-                            errorMessages.push(`Incorrect device count! Expected 10 PCs and 2 Routers, but found ${pcCount} PCs and ${routerCount} Routers.`);
+                            errorMessages.push(`Incorrect device count! Expected 6 PCs, 2 Hubs and 1 Router, but found ${pcCount} PCs, ${hubCount} Hubs, and ${routerCount} Routers.`);
                         }
 
                         if (isValidTopology) {
@@ -481,7 +493,7 @@ export default function ScenarioOne() {
         setSelectedDevice(null);
         setShowAlert({ show: true, message: 'Simulation reset successfully!', type: 'success' });
         setStarted(false);
-        setTimeRemaining(300);
+        setTimeRemaining(240);
     };
 
     const handleStopSimulation = () => {
