@@ -14,7 +14,6 @@ import { HiOutlineExclamationCircle } from 'react-icons/hi';
 
 // Imported UI Components
 import { Card, Button, Checkbox, Dropdown, Label, Tooltip, Modal, TextInput, Alert, Progress } from 'flowbite-react'
-import { isResSent } from 'next/dist/shared/lib/utils';
 
 export default function ScenarioOne() {
 
@@ -50,7 +49,7 @@ export default function ScenarioOne() {
 
     const [started, setStarted] = useState(false);
     // Seconds for timer
-    const [timeRemaining, setTimeRemaining] = useState(20);
+    const [timeRemaining, setTimeRemaining] = useState(300);
 
     useEffect(() => {
         let timer;
@@ -64,7 +63,7 @@ export default function ScenarioOne() {
             timer = setTimeout(() => setTimeRemaining(timeRemaining - 1), 1000);
         } else if (timeRemaining === 0) {
             setStarted(false);
-            setTimeRemaining(20);
+            setTimeRemaining(300);
             runAndReset();
         }
         return () => clearTimeout(timer);
@@ -473,81 +472,6 @@ export default function ScenarioOne() {
         });
     };
 
-    // const handleRunSimulation = async () => {
-    //     setIsSimulationRunning(true);
-    //     setProgress(0);
-
-    //     intervalRef.current = setInterval(() => {
-    //         setProgress(oldProgress => {
-    //             if (oldProgress >= 100) {
-    //                 clearInterval(intervalRef.current);
-    //                 setIsSimulationRunning(false);
-
-    //                 const nodesData = nodes.current.get();
-    //                 const edgesData = edges.current.get();
-
-    //                 const isCanvasEmpty = nodesData.length === 0;
-
-    //                 if (isCanvasEmpty) {
-    //                     setShowSimulationModal(true);
-    //                     setErrorMessages([
-    //                         'The canvas is empty. Please add devices first.'
-    //                     ]);
-    //                     setSuccessMessages([]);
-    //                     return;
-    //                 }
-
-    //                 const allDevicesHaveIP = nodesData.every(node => node.ip);
-
-    //                 if (!allDevicesHaveIP) {
-    //                     setShowSimulationModal(true);
-    //                     setErrorMessages([
-    //                         'All devices placed must have a unique IP address.'
-    //                     ]);
-    //                     setSuccessMessages([]);
-    //                     return;
-    //                 }
-
-    //                 const validNodes = nodesData.filter(node => deviceIPs[node.id]);
-
-    //                 const { isValidTopology, isValidDeviceCount, pcCount, routerCount } = validateRingTopology(validNodes, edgesData);
-    //                 const arePoliciesValid = validatePolicies(devicePolicies);
-
-    //                 const errorMessages = [];
-    //                 const successMessages = [];
-
-    //                 if (isValidDeviceCount) {
-    //                     successMessages.push(`Device count is correct! ${pcCount} PCs and ${routerCount} Routers found.`);
-    //                 } else {
-    //                     errorMessages.push(`Incorrect device count! Expected 10 PCs and 2 Routers, but found ${pcCount} PCs and ${routerCount} Routers.`);
-    //                 }
-
-    //                 if (isValidTopology) {
-    //                     successMessages.push('The Topology is correct!');
-    //                 } else {
-    //                     errorMessages.push('Incorrect Topology!');
-    //                 }
-
-    //                 if (arePoliciesValid) {
-    //                     successMessages.push('Policies are correctly applied!');
-    //                 } else {
-    //                     errorMessages.push('Policies are not correctly applied.');
-    //                 }
-
-    //                 if (isValidDeviceCount && isValidTopology && arePoliciesValid) {
-    //                     successMessages.push('Well Done! The scenario conditions are met.');
-    //                 }
-
-    //                 setErrorMessages(errorMessages);
-    //                 setSuccessMessages(successMessages);
-    //                 setShowSimulationModal(true);
-    //             } else {
-    //                 return oldProgress + 1;
-    //             }
-    //         });
-    //     }, 100);
-    // };
-
     const handleResetSimulation = () => {
         nodes.current.clear();
         edges.current.clear();
@@ -557,7 +481,7 @@ export default function ScenarioOne() {
         setSelectedDevice(null);
         setShowAlert({ show: true, message: 'Simulation reset successfully!', type: 'success' });
         setStarted(false);
-        setTimeRemaining(20);
+        setTimeRemaining(300);
     };
 
     const handleStopSimulation = () => {
@@ -670,93 +594,6 @@ export default function ScenarioOne() {
                         </div>
                     )}
                 </Card>
-
-                {/* <Card className="flex-grow rounded-lg shadow-md">
-                    <h2 className="text-lg text-center font-semibold">Topology Structure</h2>
-
-                    <div className="flex space-x-4">
-                        <Tooltip content="Router" style='light' placement='bottom' animation='duration-500'>
-                            <Card
-                                className="w-20 h-20 flex items-center text-stone-600 transform hover:scale-105 transition duration-300"
-                                draggable
-                                onDragStart={(e) => handleDragStart(e, 'Router')}>
-                                <Image
-                                    src="/router.png"
-                                    alt="Router"
-                                    width={80}
-                                    height={80}
-                                />
-                            </Card>
-                        </Tooltip>
-
-                        <Tooltip content="Hub" style='light' placement='bottom' animation='duration-500'>
-                            <Card
-                                className="w-20 h-20 flex items-center text-stone-600 transform hover:scale-105 transition duration-300"
-                                draggable
-                                onDragStart={(e) => handleDragStart(e, 'Hub')}>
-                                <Image
-                                    src="/hub.png"
-                                    alt="Hub"
-                                    width={80}
-                                    height={80}
-                                />
-                            </Card>
-                        </Tooltip>
-
-                        <Tooltip content="PC" style='light' placement='bottom' animation='duration-500'>
-                            <Card
-                                className="w-20 h-20 flex items-center text-stone-600 transform hover:scale-105 transition duration-300"
-                                draggable
-                                onDragStart={(e) => handleDragStart(e, 'PC')}>
-                                <Image
-                                    src="/pc.png"
-                                    alt="PC"
-                                    width={80}
-                                    height={80}
-                                />
-                            </Card>
-                        </Tooltip>
-
-                        {showAlert.show && (
-                            <Alert color={showAlert.type} className="mb-4">
-                                {showAlert.message}
-                            </Alert>
-                        )}
-                    </div>
-
-                    <div ref={networkRef} className="relative border-2 border-dashed border-gray-300 rounded-lg h-80"></div>
-
-                    <div className="flex justify-between items-center">
-                        <div className="text-stone-600 flex">
-                            <div className='p-2 font-semibold'>
-                                {selectedNodes.length} node{selectedNodes.length !== 1 ? 's' : ''} selected
-                            </div>
-                            <Button onClick={resetSelection} color="gray"
-                                className='ml-2 text-stone-600 border-stone-400 shadow-md 
-                            transform hover:scale-105 active:scale-100 transition duration-300'>
-                                <IoArrowUndo />
-                            </Button>
-                        </div>
-
-                        <div className="flex space-x-3">
-                            <Tooltip content='Link Nodes' style='light' placement='top' animation='duration-500'>
-                                <Button onClick={handleConnectNodes} gradientMonochrome="teal"
-                                    className="text-stone-200 border-stone-400 shadow-md 
-                            transform hover:scale-105 active:scale-100 transition duration-300">
-                                    <FaLink className='text-lg' />
-                                </Button>
-                            </Tooltip>
-
-                            <Tooltip content='Delete Nodes' style='light' placement='top' animation='duration-500'>
-                                <Button onClick={handleDeleteNodes} gradientMonochrome="failure"
-                                    className="text-stone-200 border-stone-400 shadow-md 
-                            transform hover:scale-105 active:scale-100 transition duration-300">
-                                    <FaTrash className='text-lg' />
-                                </Button>
-                            </Tooltip>
-                        </div>
-                    </div>
-                </Card> */}
 
                 <div className='flex flex-col gap-3'>
                     {/* Policy Configuration Panel */}
@@ -872,26 +709,21 @@ export default function ScenarioOne() {
 
                         {started ? (
                             <>
-                                <div className="text-lg font-bold text-center mb-4">
+                                <div className="text-md font-bold text-center mb-4">
                                     Time Left: {timeRemaining} seconds
                                 </div>
                                 {/* Show Reset and Start Simulation when started is true */}
                                 <Button onClick={handleResetSimulation} gradientMonochrome="teal"
                                     className='text-stone-200 border-stone-400 shadow-md
                 transform hover:scale-105 active:scale-100 transition duration-300'>
-                                    Reset Simulation
-                                </Button>
-                                <Button onClick={handleRunSimulation}
-                                    gradientMonochrome="success" className='text-stone-200 border-stone-400 shadow-md 
-                transform hover:scale-105 active:scale-100 transition duration-300'>
-                                    Start Simulation
+                                    Forfeit All
                                 </Button>
                             </>
                         ) : (
                             <Button onClick={StartSimulationTimer} gradientMonochrome="teal"
                                 className='text-stone-200 border-stone-400 shadow-md 
             transform hover:scale-105 active:scale-100 transition duration-300'>
-                                Start Simulation Timer
+                                Start Simulation
                             </Button>
                         )}
                     </Card>
@@ -901,7 +733,7 @@ export default function ScenarioOne() {
                     {isSimulationRunning && (
                         <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-50">
                             <div className="w-1/3 bg-white p-4 rounded shadow-lg">
-                                <p className="text-lg font-semibold text-center">Simulation in Progress...</p>
+                                <p className="text-lg font-semibold text-center">Running...</p>
                                 <div className="w-full h-full bg-gray-200 rounded mt-3">
                                     <div className="mt-2">
                                         <Progress
@@ -916,7 +748,7 @@ export default function ScenarioOne() {
                                     <Button onClick={handleStopSimulation} gradientMonochrome="failure"
                                         className='text-stone-200 border-stone-400 shadow-md
                                     transform hover:scale-105 active:scale-100 transition duration-300'>
-                                        Stop Simulation
+                                        Stop
                                     </Button>
                                 </div>
                             </div>
