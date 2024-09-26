@@ -517,12 +517,11 @@ export default function ScenarioTwo() {
             const data = await res.json();
 
             if (res.ok) {
-                alert(data.message);
+                setShowAlert({ show: true, message: data.message, type: 'success' });
             } else {
-                alert('Failed to save result: ' + data.message);
+                setShowAlert({ show: true, message: data.message, type: 'failure' });
             }
         } catch (error) {
-            console.error('Error saving result:', error);
             alert('An error occurred while saving the result.');
         }
     }
