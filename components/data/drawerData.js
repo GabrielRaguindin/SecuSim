@@ -11,6 +11,6 @@ export const drawerData = [
     { icon: <PiNetworkFill />, link: '/topologies', label: 'Topologies' },
     { icon: <FaHammer />, link: '/builder', label: 'Topology Sandbox' },
     { icon: <HiCubeTransparent />, link: '/simulation', label: 'Simulate' },
-    { icon: <IoMdAnalytics />, link: '/', label: 'Results'},
+    { icon: <IoMdAnalytics />, link: '/results', label: 'Results'},
     { icon: <HiInformationCircle />, link: '/about', label: 'What is SecuSim?' },
 ]

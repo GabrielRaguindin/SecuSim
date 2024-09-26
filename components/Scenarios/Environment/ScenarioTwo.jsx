@@ -2,9 +2,10 @@
 
 // Imported Modules
 import { useEffect, useRef, useState } from 'react';
-import Image from 'next/image';
 import { Network } from 'vis-network';
 import { DataSet } from 'vis-data';
+import Image from 'next/image';
+import ScenarioModal from "@/components/Scenarios/ScenarioModal";
 
 // Imported Icons
 import { IoArrowUndo } from "react-icons/io5";
@@ -33,6 +34,7 @@ export default function ScenarioTwo() {
     const [showModal, setShowModal] = useState(false);
     const [showIpModal, setShowIpModal] = useState(false);
     const [showSimulationModal, setShowSimulationModal] = useState(false);
+    const [openScenarioModal, setOpenScenarioModal] = useState(true);
 
     // State Variables (Simulation Messages)
     const [errorMessages, setErrorMessages] = useState([]);
@@ -502,9 +504,38 @@ export default function ScenarioTwo() {
         setProgress(0);
     };
 
+    const handleSaveResult = async () => {
+        try {
+            const res = await fetch('/api/saveResults', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ errorMessages, successMessages }),
+            });
+
+            const data = await res.json();
+
+            if (res.ok) {
+                alert(data.message);
+            } else {
+                alert('Failed to save result: ' + data.message);
+            }
+        } catch (error) {
+            console.error('Error saving result:', error);
+            alert('An error occurred while saving the result.');
+        }
+    }
+
     return (
         <div className="font-montserrat text-stone-600 flex flex-col p-3 bg-gray-100">
             {/* Main Content Area */}
+            <div className="flex justify-end p-5">
+                <Button
+                    gradientMonochrome="teal"
+                    className="shadow-md transform hover:scale-105 active:scale-100 transition duration-300"
+                    onClick={() => setOpenScenarioModal(true)}> Open Scenario Details </Button>
+            </div>
             <div className="flex gap-3">
                 {/* Topology Builder Placeholder */}
                 <Card className="flex-grow rounded-lg shadow-md relative">
@@ -745,7 +776,7 @@ export default function ScenarioTwo() {
                     {isSimulationRunning && (
                         <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-50">
                             <div className="w-1/3 bg-white p-4 rounded shadow-lg">
-                                <p className="text-lg font-semibold text-center">Running...</p>
+                                <p className="text-lg font-semibold text-center">Simulator Running...</p>
                                 <div className="w-full h-full bg-gray-200 rounded mt-3">
                                     <div className="mt-2">
                                         <Progress
@@ -842,13 +873,29 @@ export default function ScenarioTwo() {
                         </ul>
                     )}
 
-                    <div className='flex justify-end mt-4'>
+                    <div className='flex justify-end gap-3 mt-4'>
+                        <Button className='text-stone-600 border-stone-400 shadow-md 
+                transform hover:scale-105 active:scale-100 transition duration-300'
+                            color="gray" onClick={() => setShowSimulationModal(false)}>Close</Button>
                         <Button className='text-stone-100 border-stone-400 shadow-md 
-                            transform hover:scale-105 active:scale-100 transition duration-300'
-                            gradientMonochrome="teal" onClick={() => setShowSimulationModal(false)}>Close</Button>
+                transform hover:scale-105 active:scale-100 transition duration-300'
+                            gradientMonochrome="teal" onClick={handleSaveResult}>Save Result</Button>
                     </div>
                 </Modal.Body>
             </Modal>
+
+            <ScenarioModal
+                title="Scenario 2"
+                scenarioTitle="Optimized Video Streaming in a Star Network"
+                scenarioDesc="Professor X wants to optimize his video streaming in a star network, so he asked an IT Professional to deal with the problem."
+                description="Build a star topology with 9 devices (including PCs, routers, and hubs) optimized for video streaming."
+                objOne="Create a star topology with 6 PCs, 2 hubs, and 1 router. The router must be at the center, connecting to the hubs and PCs."
+                objTwo="Prioritize streaming for all PCs to ensure smooth video streaming. Throttle bulk data on 3 specific PCs to ensure bandwidth for streaming."
+                objThree="Allow web traffic and restrict outbound traffic to prevent network overload."
+                objFour="You have to complete the requirements of the scenario under 4 minutes (240 seconds)"
+                openModal={openScenarioModal}
+                setOpenModal={setOpenScenarioModal}
+            />
         </div >
     );
 }
