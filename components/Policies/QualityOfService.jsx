@@ -5,9 +5,26 @@ import PolicyCard from "../PolicyCard";
 import { useState } from "react";
 import { handleSavePolicy } from "@/app/lib/SavePolicy";
 import PolicyModal from "./PolicyModal/PolicyModal";
+import Toast from "../Toast/Toast";
 
 export default function QualityOfService() {
     const [openModalQuality, setOpenModalQuality] = useState(false);
+
+
+
+    const [toastMessage, setToastMessage] = useState('');
+    const [toastType, setToastType] = useState('');
+    const [showToast, setShowToast] = useState(false);
+
+    const handleSave = async () => {
+        const { status, message } = await handleSavePolicy('Quality of Service Policy', qualitySettings);
+        setToastMessage(message);
+        setToastType(status);
+        setShowToast(true);
+
+        setTimeout(() => setShowToast(false), 3000);
+    };
+
     const [qualitySettings, setQualitySettings] = useState({
         voip: false,
         limitP2P: false,
@@ -33,8 +50,10 @@ export default function QualityOfService() {
                 setSettings={setQualitySettings}
                 openModal={openModalQuality}
                 setOpenModal={setOpenModalQuality}
-                handleSavePolicy={handleSavePolicy}
+                handleSavePolicy={handleSave}
             />
+
+            {showToast && <Toast message={toastMessage} type={toastType} setShowToast={setShowToast} />}
         </>
     )
 }

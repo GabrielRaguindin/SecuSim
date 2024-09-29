@@ -9,11 +9,20 @@ export const handleSavePolicy = async (policyType, settings) => {
         });
         if (response.ok) {
             const data = await response.json();
-            console.log(data.message);
+            return {
+                status: 'success',
+                message: `${data.message}`
+            }
         } else {
-            console.error('Failed to save settings');
+            return {
+                status: 'failed',
+                message: 'Saving Policy Failed'
+            }
         }
         } catch (error) {
-            console.error('Error saving settings:', error);
+            return {
+            status: 'error',
+            message: `error ${error.message}`
+            }
         }
     }
