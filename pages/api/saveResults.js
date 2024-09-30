@@ -1,6 +1,15 @@
 let savedResults = []; // Temporary storage
 
+const EXPIRATION_TIME = 30 * 24 * 60 * 60 * 1000; // 30 days in milliseconds
+
+function cleanExpiredResults() {
+    const now = Date.now();
+    savedResults = savedResults.filter(result => now - result.timestamp < EXPIRATION_TIME);
+}
+
 export default function handler(req, res) {
+    cleanExpiredResults()
+
     if (req.method === 'POST') {
         const { errorMessages, successMessages } = req.body;
         if (!errorMessages || !successMessages) {
@@ -10,7 +19,7 @@ export default function handler(req, res) {
         const resultData = {
             errorMessages,
             successMessages,
-            timestamp: new Date().toISOString(),
+            timestamp: Date.now(),
         };
 
         savedResults.push(resultData); // Add to the in-memory storage

@@ -55,7 +55,7 @@ export default function ScenarioOne() {
 
     const [started, setStarted] = useState(false);
     // Seconds for timer
-    const [timeRemaining, setTimeRemaining] = useState(300);
+    const [timeRemaining, setTimeRemaining] = useState(20);
 
     useEffect(() => {
         let timer;
