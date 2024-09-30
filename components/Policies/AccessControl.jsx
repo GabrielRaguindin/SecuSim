@@ -5,9 +5,23 @@ import PolicyCard from "../PolicyCard";
 import { SiOpenaccess } from "react-icons/si";
 import { handleSavePolicy } from "@/app/lib/SavePolicy";
 import PolicyModal from "./PolicyModal/PolicyModal";
+import Toast from "../Toast/Toast";
 
 export default function AccessControl() {
     const [openModalAccess, setOpenModalAccess] = useState(false);
+
+    const [toastMessage, setToastMessage] = useState('');
+    const [toastType, setToastType] = useState('');
+    const [showToast, setShowToast] = useState(false);
+
+    const handleSave = async () => {
+        const { status, message } = await handleSavePolicy('Access Control Policy', accessSettings);
+        setToastMessage(message);
+        setToastType(status);
+        setShowToast(true);
+
+        setTimeout(() => setShowToast(false), 3000);
+    };
 
     const [accessSettings, setAccessSettings] = useState({
         remoteDesktopAccess: false,
@@ -34,8 +48,10 @@ export default function AccessControl() {
                 setSettings={setAccessSettings}
                 openModal={openModalAccess}
                 setOpenModal={setOpenModalAccess}
-                handleSavePolicy={handleSavePolicy}
+                handleSavePolicy={handleSave}
             />
+
+            {showToast && <Toast message={toastMessage} type={toastType} setShowToast={setShowToast} />}
         </>
     )
 }

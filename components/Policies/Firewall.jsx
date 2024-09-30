@@ -5,9 +5,23 @@ import PolicyCard from "../PolicyCard";
 import { useState } from "react";
 import { handleSavePolicy } from "@/app/lib/SavePolicy";
 import PolicyModal from "./PolicyModal/PolicyModal";
+import Toast from "../Toast/Toast";
 
 export default function FirewallPolicy() {
     const [openModalFirewall, setOpenModalFirewall] = useState(false);
+
+    const [toastMessage, setToastMessage] = useState('');
+    const [toastType, setToastType] = useState('');
+    const [showToast, setShowToast] = useState(false);
+
+    const handleSave = async () => {
+        const { status, message } = await handleSavePolicy('Firewall Policy', firewallSettings);
+        setToastMessage(message);
+        setToastType(status);
+        setShowToast(true);
+
+        setTimeout(() => setShowToast(false), 3000);
+    };
 
     const [firewallSettings, setFirewallSettings] = useState({
         blockUntrustedIPs: false,
@@ -33,8 +47,10 @@ export default function FirewallPolicy() {
                 setSettings={setFirewallSettings}
                 openModal={openModalFirewall}
                 setOpenModal={setOpenModalFirewall}
-                handleSavePolicy={handleSavePolicy}
+                handleSavePolicy={handleSave}
             />
+
+            {showToast && <Toast message={toastMessage} type={toastType} setShowToast={setShowToast} />}
         </>
     )
 }

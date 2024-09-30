@@ -4,7 +4,7 @@ export default function handler(req, res) {
     if (req.method === 'POST') {
         const { policyType, settings } = req.body;
         policyData[policyType] = settings;
-        res.status(200).json({ message: 'Settings saved successfully' });
+        res.status(200).json({ message: `Success, Settings saved Successfully` });
 
     } else if (req.method === 'GET') {
         const { policyType } = req.query;

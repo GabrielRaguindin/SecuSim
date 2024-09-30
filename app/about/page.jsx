@@ -1,4 +1,4 @@
-const page = () => {
+export default function About() {
   return (
     <div className='font-montserrat'>
       <div className='text-center text-3xl font-bold text-stone-600 py-5 mt-2'> What is SecuSim? </div>
@@ -8,5 +8,3 @@ const page = () => {
     </div>
   )
 }
-
-export default page
