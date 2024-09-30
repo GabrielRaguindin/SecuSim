@@ -15,6 +15,7 @@ import { HiOutlineExclamationCircle } from 'react-icons/hi';
 
 // Imported UI Components
 import { Card, Button, Checkbox, Dropdown, Label, Tooltip, Modal, TextInput, Alert, Progress } from 'flowbite-react'
+import Toast from '../../Toast/Toast';
 
 export default function ScenarioTwo() {
 
@@ -29,8 +30,11 @@ export default function ScenarioTwo() {
     const [selectedDevice, setSelectedDevice] = useState(null);
     const [selectedNodes, setSelectedNodes] = useState([]);
 
-    // State Variables (Modals & Alerts)
+    // State Variables (Modals, Alerts & Toasts)
     const [showAlert, setShowAlert] = useState({ show: false, message: '', type: '' });
+    const [toastMessage, setToastMessage] = useState('');
+    const [toastType, setToastType] = useState('');
+    const [showToast, setShowToast] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [showIpModal, setShowIpModal] = useState(false);
     const [showSimulationModal, setShowSimulationModal] = useState(false);
@@ -517,9 +521,15 @@ export default function ScenarioTwo() {
             const data = await res.json();
 
             if (res.ok) {
-                setShowAlert({ show: true, message: data.message, type: 'success' });
+                setToastMessage(data.message);
+                setToastType('success');
+                setShowToast(true);
+                setTimeout(() => setShowToast(false), 3000);
             } else {
-                setShowAlert({ show: true, message: data.message, type: 'failure' });
+                setToastMessage(data.message);
+                setToastType('failure');
+                setShowToast(true);
+                setTimeout(() => setShowToast(false), 3000);
             }
         } catch (error) {
             alert('An error occurred while saving the result.');
@@ -529,6 +539,7 @@ export default function ScenarioTwo() {
     return (
         <div className="font-montserrat text-stone-600 flex flex-col p-3 bg-gray-100">
             {/* Main Content Area */}
+            {showToast && <Toast message={toastMessage} type={toastType} setShowToast={setShowToast} />}
             <div className="flex justify-end p-5">
                 <Button
                     gradientMonochrome="teal"
@@ -889,8 +900,8 @@ export default function ScenarioTwo() {
                 scenarioDesc="Professor X wants to optimize his video streaming in a star network, so he asked an IT Professional to deal with the problem."
                 description="Build a star topology with 9 devices (including PCs, routers, and hubs) optimized for video streaming."
                 objOne="Create a star topology with 6 PCs, 2 hubs, and 1 router. The router must be at the center, connecting to the hubs and PCs."
-                objTwo="Prioritize streaming for all PCs to ensure smooth video streaming. Throttle bulk data on 3 specific PCs to ensure bandwidth for streaming."
-                objThree="Allow web traffic and restrict outbound traffic to prevent network overload."
+                objTwo="Prioritize streaming for ALL PCs to ensure smooth video streaming. Throttle bulk data on only 3 specific PCs to ensure bandwidth for streaming."
+                objThree="Allow web traffic for ALL PCs and restrict outbound traffic to the rest of the devices to prevent network overload."
                 objFour="You have to complete the requirements of the scenario under 4 minutes (240 seconds)"
                 openModal={openScenarioModal}
                 setOpenModal={setOpenScenarioModal}

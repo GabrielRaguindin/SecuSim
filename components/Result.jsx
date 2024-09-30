@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { Card, Button } from 'flowbite-react';
+import jsPDF from 'jspdf';
+import { FaTrash, FaDownload } from 'react-icons/fa6';
 
 export default function Results() {
     const [results, setResults] = useState([]);
@@ -25,6 +27,42 @@ export default function Results() {
         setResults((prevResults) => prevResults.filter((_, i) => i !== index));
     };
 
+    const handleDownloadPDF = (result, index) => {
+        const doc = new jsPDF({
+            orientation: 'landscape',
+            unit: 'mm',
+            format: [320, 90],
+        });
+        
+        // Title
+        doc.setFontSize(18);
+        doc.text(`Simulation Result ${index + 1}`, 10, 10);
+        
+        // Success Messages
+        doc.setFontSize(14);
+        doc.setTextColor('green');
+        doc.text('Success Messages:', 10, 20);
+        doc.setFontSize(12);
+        doc.text(result.successMessages.join(', '), 10, 30);
+        
+        // Error Messages
+        doc.setFontSize(14);
+        doc.setTextColor('red');
+        doc.text('Error Messages:', 10, 40);
+        doc.setFontSize(12);
+        doc.text(result.errorMessages.join(', '), 10, 50);
+        
+        // Timestamp
+        doc.setFontSize(14);
+        doc.setTextColor('gray');
+        doc.text('Timestamp:', 10, 60);
+        doc.setFontSize(12);
+        doc.text(result.timestamp, 10, 70);
+        
+        // Save the PDF
+        doc.save(`simulation-result-${index + 1}.pdf`);
+    };
+
     return (
         <div className='font-montserrat text-stone-600'>
             <h1 className="text-2xl font-bold p-4">Simulation Results</h1>
@@ -32,7 +70,7 @@ export default function Results() {
                 <p className='ml-4'>No results found.</p>
             ) : (
                 results.map((result, index) => (
-                    <Card key={index} className="w-[60%] mb-3 ml-3 shadow-lg">
+                    <Card key={index} className="w-[90%] mb-3 ml-3 shadow-lg">
                         <h2 className='text-xl font-semibold'>Result {index + 1}</h2>
                         <p className='text-green-600'>
                             <strong>Success Messages:</strong> {result.successMessages.join(', ')}
@@ -44,11 +82,20 @@ export default function Results() {
                             <strong>Timestamp:</strong> {result.timestamp}
                         </p>
 
-                        <div className='flex justify-end'>
-                            <Button gradientMonochrome='failure'
+                        <div className='flex justify-end gap-3'>
+                            <Button
+                                color='gray'
                                 className='shadow-md transform hover:scale-105 active:scale-100 transition duration-300'
-                                onClick={() => handleDelete(index)}>
-                                Delete Record
+                                onClick={() => handleDownloadPDF(result, index)}
+                            >
+                                <FaDownload />
+                            </Button>
+                            <Button
+                                gradientMonochrome='failure'
+                                className='shadow-md transform hover:scale-105 active:scale-100 transition duration-300'
+                                onClick={() => handleDelete(index)}
+                            >
+                                <FaTrash />
                             </Button>
                         </div>
                     </Card>

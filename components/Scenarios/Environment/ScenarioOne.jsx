@@ -15,6 +15,7 @@ import { HiOutlineExclamationCircle } from 'react-icons/hi';
 
 // Imported UI Components
 import { Card, Button, Checkbox, Dropdown, Label, Tooltip, Modal, TextInput, Alert, Progress } from 'flowbite-react'
+import Toast from '../../Toast/Toast';
 
 export default function ScenarioOne() {
 
@@ -29,8 +30,11 @@ export default function ScenarioOne() {
     const [selectedDevice, setSelectedDevice] = useState(null);
     const [selectedNodes, setSelectedNodes] = useState([]);
 
-    // State Variables (Modals & Alerts)
+    // State Variables (Modals, Alerts & Toasts)
     const [showAlert, setShowAlert] = useState({ show: false, message: '', type: '' });
+    const [toastMessage, setToastMessage] = useState('');
+    const [toastType, setToastType] = useState('');
+    const [showToast, setShowToast] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [showIpModal, setShowIpModal] = useState(false);
     const [showSimulationModal, setShowSimulationModal] = useState(false);
@@ -501,13 +505,19 @@ export default function ScenarioOne() {
                 },
                 body: JSON.stringify({ errorMessages, successMessages }),
             });
-    
+
             const data = await res.json();
-    
+
             if (res.ok) {
-                setShowAlert({ show: true, message: data.message, type: 'success' });
+                setToastMessage(data.message);
+                setToastType('success');
+                setShowToast(true);
+                setTimeout(() => setShowToast(false), 3000);
             } else {
-                setShowAlert({ show: true, message: data.message, type: 'failure' });
+                setToastMessage(data.message);
+                setToastType('failure');
+                setShowToast(true);
+                setTimeout(() => setShowToast(false), 3000);
             }
         } catch (error) {
             alert('An error occurred while saving the result.');
@@ -517,6 +527,7 @@ export default function ScenarioOne() {
     return (
         <div className="font-montserrat text-stone-600 flex flex-col p-3 bg-gray-100">
             {/* Main Content Area */}
+            {showToast && <Toast message={toastMessage} type={toastType} setShowToast={setShowToast} />}
             <div className="flex justify-end p-5">
                 <Button
                     gradientMonochrome="teal"
