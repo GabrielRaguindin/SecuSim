@@ -75,11 +75,12 @@ export default function Results() {
         doc.text(result.errorMessages.join(', '), 10, 50);
 
         // Timestamp
+        const formattedTimestamp = new Date(result.timestamp).toLocaleString();
         doc.setFontSize(14);
         doc.setTextColor('gray');
         doc.text('Timestamp:', 10, 60);
         doc.setFontSize(12);
-        doc.text(result.timestamp, 10, 70);
+        doc.text(formattedTimestamp, 10, 70);
 
         // Save the PDF
         doc.save(`simulation-result-${index + 1}.pdf`);
