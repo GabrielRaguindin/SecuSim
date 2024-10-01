@@ -898,10 +898,10 @@ export default function ScenarioTwo() {
                     title="Scenario 2"
                     scenarioTitle="Optimized Video Streaming in a Star Network"
                     scenarioDesc="Professor X wants to optimize his video streaming in a star network, so he asked an IT Professional to deal with the problem."
-                    description="Build a star topology with 9 devices (including PCs, routers, and hubs) optimized for video streaming."
-                    objOne="Create a star topology with 6 PCs, 2 hubs, and 1 router. The router must be at the center, connecting to the hubs and PCs."
-                    objTwo="Prioritize streaming for ALL PCs to ensure smooth video streaming. Throttle bulk data on only 3 specific PCs to ensure bandwidth for streaming."
-                    objThree="Allow web traffic for ALL PCs and restrict outbound traffic to the rest of the devices to prevent network overload."
+                    description="Build a Star Topology with 9 devices (including PCs, Routers, and Hubs) optimized for video streaming."
+                    objOne="Create a Star Topology with 6 PCs, 2 Hubs, and 1 Router. The router must be at the center, connecting to the hubs and PCs."
+                    objTwo="Prioritize Streaming for ALL PCs to ensure smooth video streaming. Throttle Bulk Data on only 3 specific PCs to ensure bandwidth for streaming."
+                    objThree="Allow Web Traffic for ALL PCs and Restrict Outbound Traffic to THE REST OF THE DEVICES to prevent network overload."
                     objFour="You have to complete the requirements of the scenario under 4 minutes (240 seconds)"
                     openModal={openScenarioModal}
                     setOpenModal={setOpenScenarioModal}

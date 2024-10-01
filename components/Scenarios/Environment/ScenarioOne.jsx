@@ -886,10 +886,10 @@ export default function ScenarioOne() {
                     title="Scenario 1"
                     scenarioTitle="File Sharing in a secure Ring Network"
                     scenarioDesc="A local company needs a network administrator to configurate a ring network for a secure file sharing in an alloted time."
-                    description="Build a ring topology with 10 PCs and 2 routers where only certain PCs can transfer files securely."
-                    objOne="Create a ring topology with 10 PCs and 2 routers. Ensure that each PC is connected to at least one router."
-                    objTwo="Enable file transfer access only for 5 specific PCs. The remaining PCs should not have file transfer access."
-                    objThree="Block untrusted IPs to prevent unauthorized access to the file-sharing PCs. Allow web traffic for all devices."
+                    description="Build a Ring Topology with 10 PCs and 2 routers where only certain PCs can transfer files securely."
+                    objOne="Create a Ring Topology with 10 PCs and 2 routers. Ensure that each PC is connected to at least one router."
+                    objTwo="Enable File Transfer Access only for 5 specific PCs. The remaining PCs SHOULD NOT HAVE File Transfer Access."
+                    objThree="Block Untrusted IPs to prevent unauthorized access to the file-sharing PCs. Allow Web Traffic FOR ALL DEVICES."
                     objFour="You have to complete the requirements of the scenario under 5 minutes (300 seconds)"
                     openModal={openScenarioModal}
                     setOpenModal={setOpenScenarioModal}
