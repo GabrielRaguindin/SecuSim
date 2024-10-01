@@ -33,7 +33,6 @@ export default function Results() {
                 }
 
                 const data = await response.json();
-                console.log('Fetched Results:', data);
                 setResults(data || []);
             } catch (err) {
                 setError(err.message);
@@ -45,8 +44,24 @@ export default function Results() {
         fetchData();
     }, []);
 
-    const handleDelete = (index) => {
-        setResults((prevResults) => prevResults.filter((_, i) => i !== index));
+    const handleDelete = async (id) => {
+        try {
+            const response = await fetch('/api/saveResults', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ id }),
+            });
+
+            if (response.ok) {
+                setResults((prevResults) => prevResults.filter((result) => result.id !== id));
+            } else {
+                console.error('Failed to delete');
+            }
+        } catch (error) {
+            console.error('Error during deletion:', error);
+        }
     };
 
     const handleDownloadPDF = (result, index) => {
@@ -65,14 +80,14 @@ export default function Results() {
         doc.setTextColor('green');
         doc.text('Success Messages:', 10, 20);
         doc.setFontSize(12);
-        doc.text(result.successMessages.join(', '), 10, 30);
+        doc.text(result.successMessages.length > 0 ? result.successMessages.join(', ') : 'N/A', 10, 30);
 
         // Error Messages
         doc.setFontSize(14);
         doc.setTextColor('red');
         doc.text('Error Messages:', 10, 40);
         doc.setFontSize(12);
-        doc.text(result.errorMessages.join(', '), 10, 50);
+        doc.text(result.errorMessages.length > 0 ? result.errorMessages.join(', ') : 'N/A', 10, 50);
 
         // Timestamp
         const formattedTimestamp = new Date(result.timestamp).toLocaleString();
@@ -97,8 +112,8 @@ export default function Results() {
                 <p className='ml-4'>No results found.</p>
             ) : (
                 results.map((result, index) => (
-                    <Card key={index} className="w-[90%] mb-3 ml-3 shadow-lg">
-                        <h2 className='text-xl font-semibold'>Result {index + 1}</h2>
+                    <Card key={result.id} className="w-[90%] mb-3 ml-3 shadow-lg">
+                        <h2 className='text-xl font-semibold'>Result {result.resultNumber} - {result.id}</h2>
                         <p className='text-green-600'>
                             <strong>Success Messages:</strong> {result.successMessages.length > 0 ? result.successMessages.join(', ') : 'N/A'}
                         </p>
@@ -120,7 +135,7 @@ export default function Results() {
                             <Button
                                 gradientMonochrome='failure'
                                 className='shadow-md transform hover:scale-105 active:scale-100 transition duration-300'
-                                onClick={() => handleDelete(index)}
+                                onClick={() => handleDelete(result.id)}
                             >
                                 <FaTrash />
                             </Button>

@@ -56,7 +56,7 @@ export default function ScenarioOne() {
 
     const [started, setStarted] = useState(false);
     // Seconds for timer
-    const [timeRemaining, setTimeRemaining] = useState(300);
+    const [timeRemaining, setTimeRemaining] = useState(10);
 
     useEffect(() => {
         let timer;
@@ -70,7 +70,7 @@ export default function ScenarioOne() {
             timer = setTimeout(() => setTimeRemaining(timeRemaining - 1), 1000);
         } else if (timeRemaining === 0) {
             setStarted(false);
-            setTimeRemaining(300);
+            setTimeRemaining(10);
             runAndReset();
         }
         return () => clearTimeout(timer);
@@ -488,7 +488,7 @@ export default function ScenarioOne() {
         setSelectedDevice(null);
         setShowAlert({ show: true, message: 'Simulation reset successfully!', type: 'success' });
         setStarted(false);
-        setTimeRemaining(300);
+        setTimeRemaining(10);
     };
 
     const handleStopSimulation = () => {
