@@ -10,7 +10,7 @@ export default function AccordionComponent() {
                     <Accordion.Title>What is the Simulation Environment?</Accordion.Title>
                     <Accordion.Content>
                         <p className="mb-2 text-gray-500 dark:text-gray-400">
-                            The Simulation Environment is SecuSim's interactive Network Simulator feature for users who are interested
+                            The Simulation Environment is SecuSim&apos;s interactive Network Simulator feature for users who are interested
                             to learn the fundamentals of Networking. It is not overwhelming, not complicated, and... It is free.
                         </p>
                     </Accordion.Content>
@@ -31,8 +31,8 @@ export default function AccordionComponent() {
                     <Accordion.Title>Is it safe?</Accordion.Title>
                     <Accordion.Content>
                         <p className="mb-2 text-gray-500 dark:text-gray-400">
-                            Of course! SecuSim is a generic, open for all, free-to-use Network Simulator, whatever you do here doesn't affect 
-                            real networks and doesn't collect any of your sensitive data.
+                            Of course! SecuSim is a generic, open for all, free-to-use Network Simulator, whatever you do here doesn&apos;t affect 
+                            real networks and doesn&apos;t collect any of your sensitive data.
                         </p>
                     </Accordion.Content>
                 </Accordion.Panel>
