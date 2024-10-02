@@ -5,7 +5,7 @@ import { Button, Card } from "flowbite-react";
 export default function ScenarioCard({
     icon: Icon, title, description, onButtonClick }) {
     return (
-        <Card className='w-[45%] shadow-xl'>
+        <Card className='w-full shadow-xl'>
             {Icon && <Icon className='text-6xl text-stone-600' />}
             <h5 className='text-2xl font-medium text-stone-600'>
                 {title}

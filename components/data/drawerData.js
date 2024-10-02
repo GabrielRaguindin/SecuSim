@@ -7,10 +7,10 @@ import { FaHammer } from "react-icons/fa6";
 // For future updates you can make this dynamic (fetching from the server with the following json format below)
 export const drawerData = [
     { icon: <HiHome />, link: '/home', label: 'Home' },
-    { icon: <MdPolicy />, link: '/policies', label: 'Policies' },
-    { icon: <PiNetworkFill />, link: '/topologies', label: 'Topologies' },
+    { icon: <MdPolicy />, link: '/policies', label: 'Learn Policies' },
+    { icon: <PiNetworkFill />, link: '/topologies', label: 'Learn Topologies' },
     { icon: <FaHammer />, link: '/builder', label: 'Topology Sandbox' },
-    { icon: <HiCubeTransparent />, link: '/simulation', label: 'Simulate' },
-    { icon: <IoMdAnalytics />, link: '/results', label: 'Results'},
+    { icon: <HiCubeTransparent />, link: '/simulation', label: 'Simulator' },
+    { icon: <IoMdAnalytics />, link: '/results', label: 'Result Logs'},
     { icon: <HiInformationCircle />, link: '/about', label: 'What is SecuSim?' },
 ]

@@ -112,6 +112,7 @@ const TopologyBuilder = () => {
                     Router: './router.png',
                     Hub: './hub.png',
                     PC: './pc.png',
+                    Modem: './modem.png',
                 };
                 const newNode = {
                     id: Math.random().toString(),
@@ -243,6 +244,20 @@ const TopologyBuilder = () => {
                             <Image
                                 src="/pc.png"
                                 alt="PC"
+                                width={80}
+                                height={80}
+                            />
+                        </Card>
+                    </Tooltip>
+
+                    <Tooltip content="Modem" style='light' placement='bottom' animation='duration-500'>
+                        <Card
+                            className="w-20 h-20 flex items-center text-stone-600 transform hover:scale-105 transition duration-300"
+                            draggable
+                            onDragStart={(e) => handleDragStart(e, 'Modem')}>
+                            <Image
+                                src="/modem.png"
+                                alt="Modem"
                                 width={80}
                                 height={80}
                             />
