@@ -195,6 +195,7 @@ export default function ScenarioTwo() {
                     Router: '/router.png',
                     Hub: '/hub.png',
                     PC: '/pc.png',
+                    Modem: '/modem.png',
                 };
                 const newNode = {
                     id: Math.random().toString(),
@@ -216,6 +217,7 @@ export default function ScenarioTwo() {
                         accessControl: [],
                         qos: [],
                         firewall: [],
+                        encryption: [],
                     }
                 }))
 
@@ -300,6 +302,7 @@ export default function ScenarioTwo() {
                         accessControl: [],
                         qos: [],
                         firewall: [],
+                        encryption: [],
                     }
                 };
             });
@@ -318,6 +321,7 @@ export default function ScenarioTwo() {
                     accessControl: [],
                     qos: [],
                     firewall: [],
+                    encryption: [],
                 };
 
                 return {
@@ -341,6 +345,7 @@ export default function ScenarioTwo() {
                     accessControl: devicePolicies[selectedDevice]?.accessControl || [],
                     qos: devicePolicies[selectedDevice]?.qos || [],
                     firewall: devicePolicies[selectedDevice]?.firewall || [],
+                    encryption: devicePolicies[selectedDevice]?.encryption || [],
                 }
             }));
             setShowAlert({ show: true, message: 'Policies applied successfully!', type: 'success' });
@@ -594,6 +599,21 @@ export default function ScenarioTwo() {
                                 </Card>
                             </Tooltip>
 
+                            <Tooltip content="Modem" style='light' placement='bottom' animation='duration-500'>
+                                <Card
+                                    className={`w-20 h-20 flex items-center text-stone-600 transform transition duration-300 
+                ${!started ? 'pointer-events-none opacity-50' : 'hover:scale-105'}`}
+                                    draggable={started}
+                                    onDragStart={started ? (e) => handleDragStart(e, 'Modem') : null}>
+                                    <Image
+                                        src="/modem.png"
+                                        alt="Modem"
+                                        width={80}
+                                        height={80}
+                                    />
+                                </Card>
+                            </Tooltip>
+
                             {showAlert.show && (
                                 <Alert color={showAlert.type} className="mb-4">
                                     {showAlert.message}
@@ -647,7 +667,7 @@ export default function ScenarioTwo() {
 
                     <div className='flex flex-col gap-3'>
                         {/* Policy Configuration Panel */}
-                        <Card className="w-full h-[60%] rounded-lg shadow-md">
+                        <Card className="w-full h-[65%] rounded-lg shadow-md">
                             <h2 className="text-lg font-semibold text-center">Policies Configuration</h2>
                             <div>
                                 <p className="text-center text-sm font-semibold">Device : {selectedDevice || 'None'}</p>
@@ -745,6 +765,38 @@ export default function ScenarioTwo() {
                                         onChange={() => handlePolicyChange('firewall', 'Restrict Outbound Traffic')}
                                         className='mr-2' />
                                     <Label>Restrict Outbound Traffic</Label>
+                                </Dropdown.Item>
+                            </Dropdown>
+
+                            {/* Encryption Policy */}
+                            <Dropdown outline gradientDuoTone="greenToBlue" style={{ width: '100%' }} label="Encryption" dismissOnClick={false}>
+                                <Dropdown.Item>
+                                    <Checkbox
+                                        checked={devicePolicies[selectedDevice]?.encryption.includes('Enable Data Encryption') || false}
+                                        onChange={() => handlePolicyChange('encryption', 'Enable Data Encryption')}
+                                        className='mr-2' />
+                                    <Label>Enable Data Encryption</Label>
+                                </Dropdown.Item>
+                                <Dropdown.Item>
+                                    <Checkbox
+                                        checked={devicePolicies[selectedDevice]?.encryption.includes('Require Encrypted File Sharing') || false}
+                                        onChange={() => handlePolicyChange('encryption', 'Require Encrypted File Sharing')}
+                                        className='mr-2' />
+                                    <Label>Require Encrypted File Sharing</Label>
+                                </Dropdown.Item>
+                                <Dropdown.Item>
+                                    <Checkbox
+                                        checked={devicePolicies[selectedDevice]?.encryption.includes('Enable EndToEnd Encryption') || false}
+                                        onChange={() => handlePolicyChange('encryption', 'Enable EndToEnd Encryption')}
+                                        className='mr-2' />
+                                    <Label>Enable EndToEnd Encryption</Label>
+                                </Dropdown.Item>
+                                <Dropdown.Item>
+                                    <Checkbox
+                                        checked={devicePolicies[selectedDevice]?.encryption.includes('Encrypt VoiP') || false}
+                                        onChange={() => handlePolicyChange('encryption', 'Encrypt VoiP')}
+                                        className='mr-2' />
+                                    <Label>Encrypt VoiP</Label>
                                 </Dropdown.Item>
                             </Dropdown>
 
