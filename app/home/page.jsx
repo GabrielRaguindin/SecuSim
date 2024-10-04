@@ -18,7 +18,7 @@ export default function Home() {
             className='rounded'
           />
           <h5 className='text-2xl font-medium text-stone-600'> Topology Sandbox </h5>
-          <p className='text-stone-600'> Let your creativity flow </p>
+          <p className='text-stone-600'> Build your best network topology structures </p>
           <Button gradientMonochrome='teal'
             className='shadow-md transform hover:scale-105 active:scale-100 transition duration-300'
             as={Link} href='/builder'>
@@ -34,7 +34,7 @@ export default function Home() {
             className='rounded'
           />
           <h5 className='text-2xl font-medium text-stone-600'> Simulation Environment </h5>
-          <p className='text-stone-600'> The SecuSim&apos;s pinnacle feature </p>
+          <p className='text-stone-600'> SecuSim&apos;s Interactive Network Simulator </p>
           <div className='flex justify-evenly gap-5'>
             <Popover
               content={
