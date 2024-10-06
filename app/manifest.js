@@ -1,7 +1,7 @@
 export default function manifest() {
     return {
-      name: 'SECUSIM',
-      short_name: 'SECUSIM',
+      name: 'SecuSim',
+      short_name: 'SecuSim',
       description: '',
       start_url: '/',
       display: 'standalone',
