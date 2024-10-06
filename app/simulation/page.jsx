@@ -3,6 +3,11 @@ import SecondScenario from "@/components/Scenarios/Cards/SecondScenario"
 import ThirdScenario from "@/components/Scenarios/Cards/ThirdScenario"
 import AccordionComponent from "@/components/AccordionComponent"
 
+export const metadata = {
+  title: 'Scenarios',
+  description: 'SECUSIM SIMULATOR',
+}
+
 export default function SimulationEnvironment() {
   return (
     <div className="font-montserrat">

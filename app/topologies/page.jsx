@@ -2,6 +2,11 @@ import RingTopology from "@/components/Topologies/RingTopology";
 import StarTopology from "@/components/Topologies/StarTopology";
 import MeshTopology from "@/components/Topologies/MeshTopology";
 
+export const metadata = {
+  title: 'Learn Topologies',
+  description: 'SECUSIM TOPOLOGIES',
+}
+
 export default function Topologies() {
   return (
     <div className='font-montserrat'>

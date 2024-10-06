@@ -3,6 +3,11 @@ import QualityOfService from '@/components/Policies/QualityOfService';
 import FirewallPolicy from '@/components/Policies/Firewall';
 import Encryption from '@/components/Policies/Encryption';
 
+export const metadata = {
+  title: 'Learn Policies',
+  description: 'SECUSIM Policies',
+}
+
 export default function Policies() {
   return (
     <div className='font-montserrat'>
