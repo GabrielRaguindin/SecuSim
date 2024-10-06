@@ -391,7 +391,7 @@ export default function ScenarioTwo() {
     const validatePolicies = (devicePolicies) => {
         const validDevices = Object.keys(devicePolicies).filter(ip => ip.includes('.'));
     
-        const voipEnabledDevices = validDevices.filter(ip => 
+        const voipEnabledDevices = validDevices.every(ip => 
             devicePolicies[ip].qos.includes('VoiP') &&
             devicePolicies[ip].firewall.includes('Allow Web Traffic'));
     
@@ -401,7 +401,7 @@ export default function ScenarioTwo() {
         const remoteDesktopDevices = validDevices.filter(ip =>
             devicePolicies[ip].accessControl.includes('Remote Desktop Access')).length;
     
-        return voipEnabledDevices && p2pTrafficLimited === 6 && remoteDesktopDevices === 3;
+        return voipEnabledDevices && p2pTrafficLimited && remoteDesktopDevices === 3;
     }
     
 
