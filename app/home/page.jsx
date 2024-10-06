@@ -2,6 +2,11 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Card, Button, Popover } from 'flowbite-react'
 
+export const metadata = {
+  title: 'SECUSIM',
+  description: 'SECUSIM is a Network simulator for beginners',
+}
+
 export default function Home() {
   return (
     <div className='font-montserrat'>
