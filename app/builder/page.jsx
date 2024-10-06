@@ -1,7 +1,7 @@
 import TopologyBuilder from '@/components/TopologyBuilder';
 
 export const metadata = {
-  title: 'Builder',
+  title: 'Topology Sandbox',
   description: 'SECUSIM BUILDER',
 }
 

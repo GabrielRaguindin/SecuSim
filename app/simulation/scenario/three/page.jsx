@@ -1,7 +1,7 @@
 import ScenarioThree from "@/components/Scenarios/Environment/ScenarioThree";
 
 export const metadata = {
-  title: 'Scene three',
+  title: 'Scenario Three',
   description: 'SECUSIM SIMULATOR',
 }
 

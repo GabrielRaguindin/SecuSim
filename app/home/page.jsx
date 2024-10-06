@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { Card, Button, Popover } from 'flowbite-react'
 
 export const metadata = {
-  title: 'SECUSIM',
+  title: 'SecuSim',
   description: 'SECUSIM is a Network simulator for beginners',
 }
 

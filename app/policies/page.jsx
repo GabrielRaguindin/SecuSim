@@ -4,7 +4,7 @@ import FirewallPolicy from '@/components/Policies/Firewall';
 import Encryption from '@/components/Policies/Encryption';
 
 export const metadata = {
-  title: 'Policies',
+  title: 'Learn Policies',
   description: 'SECUSIM Policies',
 }
 

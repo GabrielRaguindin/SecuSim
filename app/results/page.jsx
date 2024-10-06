@@ -1,7 +1,7 @@
 import Results from "@/components/Result";
 
 export const metadata = {
-    title: 'RESULTS',
+    title: 'Simulation Results',
     description: 'SECUSIM SIMULATION RESULTS',
 }
 

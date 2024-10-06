@@ -3,7 +3,7 @@ import StarTopology from "@/components/Topologies/StarTopology";
 import MeshTopology from "@/components/Topologies/MeshTopology";
 
 export const metadata = {
-  title: 'TOPOLOGY',
+  title: 'Learn Topologies',
   description: 'SECUSIM TOPOLOGIES',
 }
 
