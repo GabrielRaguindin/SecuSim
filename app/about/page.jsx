@@ -1,3 +1,8 @@
+export const metadata = {
+  title: 'About',
+  description: 'About SECUSIM',
+}
+
 export default function About() {
   return (
     <div className='font-montserrat'>
