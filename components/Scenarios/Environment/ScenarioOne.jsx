@@ -17,6 +17,7 @@ import { HiOutlineExclamationCircle } from 'react-icons/hi';
 import { Card, Button, Checkbox, Dropdown, Label, Tooltip, Modal, TextInput, Alert, Progress } from 'flowbite-react'
 import Toast from '../../Toast/Toast';
 import Headbar from '@/components/Headbar';
+import BackButton from '../BackButton';
 
 export default function ScenarioOne() {
 
@@ -534,6 +535,9 @@ export default function ScenarioOne() {
         <>
             <Headbar />
             <div className="font-montserrat text-stone-600 flex flex-col p-3 bg-gray-100">
+                <div className="flex justify-start mb-3">
+                    <BackButton />
+                </div>
                 {/* Main Content Area */}
                 {showToast && <Toast message={toastMessage} type={toastType} setShowToast={setShowToast} />}
                 <div className="flex gap-3">
