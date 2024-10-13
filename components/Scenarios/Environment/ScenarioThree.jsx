@@ -362,11 +362,11 @@ export default function ScenarioTwo() {
         let routerCount = 0;
 
         nodes.forEach(node => {
-            if (node.label.startsWith('PC')){
+            if (node.label.startsWith('PC')) {
                 pcCount++;
-            } else if (node.label.startsWith('Hub')){
+            } else if (node.label.startsWith('Hub')) {
                 hubCount++;
-            } else if (node.label.startsWith('Router')){
+            } else if (node.label.startsWith('Router')) {
                 routerCount++;
             }
         });
@@ -391,20 +391,20 @@ export default function ScenarioTwo() {
 
     const validatePolicies = (devicePolicies) => {
         const validDevices = Object.keys(devicePolicies).filter(ip => ip.includes('.'));
-    
-        const voipEnabledDevices = validDevices.every(ip => 
+
+        const voipEnabledDevices = validDevices.every(ip =>
             devicePolicies[ip].qos.includes('VoiP') &&
             devicePolicies[ip].firewall.includes('Allow Web Traffic'));
-    
-        const p2pTrafficLimited = validDevices.every(ip => 
+
+        const p2pTrafficLimited = validDevices.every(ip =>
             devicePolicies[ip].qos.includes('Limit P2P'));
-    
+
         const remoteDesktopDevices = validDevices.filter(ip =>
             devicePolicies[ip].accessControl.includes('Remote Desktop Access')).length;
-    
+
         return voipEnabledDevices && p2pTrafficLimited && remoteDesktopDevices === 3;
     }
-    
+
 
     const StartSimulationTimer = () => {
         setStarted(true);
@@ -896,6 +896,11 @@ export default function ScenarioTwo() {
                                 placeholder="ex: 192.168.0.1"
                                 value={fakeIpAddress}
                                 onChange={(e) => setFakeIpAddress(e.target.value)}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter') {
+                                        saveFakeIP();
+                                    }
+                                }}
                                 className="rounded text-stone-600 mt-3"
                             />
                         </div>

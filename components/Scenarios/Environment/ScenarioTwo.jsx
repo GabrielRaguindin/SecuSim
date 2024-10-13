@@ -903,6 +903,11 @@ export default function ScenarioTwo() {
                                 placeholder="ex: 192.168.0.1"
                                 value={fakeIpAddress}
                                 onChange={(e) => setFakeIpAddress(e.target.value)}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter') {
+                                        saveFakeIP();
+                                    }
+                                }}
                                 className="rounded text-stone-600 mt-3"
                             />
                         </div>

@@ -891,22 +891,28 @@ export default function ScenarioOne() {
                                 placeholder="ex: 192.168.0.1"
                                 value={fakeIpAddress}
                                 onChange={(e) => setFakeIpAddress(e.target.value)}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter') {
+                                        saveFakeIP();
+                                    }
+                                }}
                                 className="rounded text-stone-600 mt-3"
                             />
                         </div>
                         <div className="flex justify-end gap-4 mt-3">
                             <Button color="gray" className='text-stone-600 border-stone-400 shadow-md 
-                                transform hover:scale-105 active:scale-100 transition duration-300' onClick={() => setShowIpModal(false)}>
+                transform hover:scale-105 active:scale-100 transition duration-300' onClick={() => setShowIpModal(false)}>
                                 Cancel
                             </Button>
                             <Button gradientMonochrome="teal" onClick={saveFakeIP}
                                 className='text-stone-100 border-stone-400 shadow-md 
-                                transform hover:scale-105 active:scale-100 transition duration-300'>
+                transform hover:scale-105 active:scale-100 transition duration-300'>
                                 Save
                             </Button>
                         </div>
                     </Modal.Body>
                 </Modal>
+
 
                 {/* Simulation Modal */}
                 <Modal className='font-montserrat' show={showSimulationModal} onClose={() => setShowSimulationModal(false)}>
