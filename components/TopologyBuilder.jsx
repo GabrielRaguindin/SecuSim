@@ -162,6 +162,20 @@ const TopologyBuilder = () => {
         }
     };
 
+    useEffect(() => {
+        const handleKeyPress = (e) => {
+            if (e.key === ' ') {
+                handleConnectNodes();
+            }
+        };
+
+        document.addEventListener('keypress', handleKeyPress);
+
+        return () => {
+            document.removeEventListener('keypress', handleKeyPress);
+        };
+    }, [handleConnectNodes]);
+
     const handleSaveTopology = () => {
         if (topologyName) {
             const existingTopologies = getSavedTopologies();

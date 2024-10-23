@@ -1004,7 +1004,7 @@ export default function ScenarioTwo() {
                     description="Build a Star Topology with 9 devices (including PCs, Routers, and Hubs) optimized for video streaming."
                     objOne="Create a Star Topology with 6 PCs, 2 Hubs, and 1 Router. The router must be at the center, connecting to the hubs and PCs."
                     objTwo="Prioritize Streaming for ALL PCs to ensure smooth video streaming. Throttle Bulk Data on only 3 specific PCs to ensure bandwidth for streaming."
-                    objThree="Allow Web Traffic for ALL PCs and Restrict Outbound Traffic to THE REST OF THE DEVICES to prevent network overload."
+                    objThree="Allow Web Traffic and Restrict Outbound Traffic to ALL THE DEVICES to prevent network overload."
                     objFour="You have to complete the requirements of the scenario under 7 minutes (420 seconds)"
                     openModal={openScenarioModal}
                     setOpenModal={setOpenScenarioModal}
