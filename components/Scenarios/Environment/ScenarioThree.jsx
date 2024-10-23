@@ -57,7 +57,7 @@ export default function ScenarioTwo() {
 
     const [started, setStarted] = useState(false);
     // Seconds for timer
-    const [timeRemaining, setTimeRemaining] = useState(210);
+    const [timeRemaining, setTimeRemaining] = useState(360);
 
     useEffect(() => {
         let timer;
@@ -71,7 +71,7 @@ export default function ScenarioTwo() {
             timer = setTimeout(() => setTimeRemaining(timeRemaining - 1), 1000);
         } else if (timeRemaining === 0) {
             setStarted(false);
-            setTimeRemaining(210);
+            setTimeRemaining(360);
             runAndReset();
         }
         return () => clearTimeout(timer);
@@ -244,6 +244,20 @@ export default function ScenarioTwo() {
             setShowAlert({ show: true, message: 'Please select exactly two nodes to connect', type: 'warning' });
         }
     };
+
+    useEffect(() => {
+        const handleKeyPress = (e) => {
+            if (e.key === ' ') {
+                handleConnectNodes();
+            }
+        };
+
+        document.addEventListener('keypress', handleKeyPress);
+
+        return () => {
+            document.removeEventListener('keypress', handleKeyPress);
+        };
+    }, [handleConnectNodes]);
 
     const handleDeleteNodes = () => {
         setShowModal(true);
@@ -499,7 +513,7 @@ export default function ScenarioTwo() {
         setSelectedDevice(null);
         setShowAlert({ show: true, message: 'Simulation reset successfully!', type: 'success' });
         setStarted(false);
-        setTimeRemaining(210);
+        setTimeRemaining(360);
     };
 
     const handleStopSimulation = () => {
@@ -548,7 +562,7 @@ export default function ScenarioTwo() {
                 <div className="flex gap-3">
                     {/* Topology Builder Placeholder */}
                     <Card className="flex-grow rounded-lg shadow-md relative">
-                        <h2 className="text-lg text-center font-semibold">Topology Structure</h2>
+                        <h2 className="text-lg text-center font-semibold">Topology</h2>
 
                         <div className="flex space-x-4">
                             <Tooltip content="Router" style='light' placement='bottom' animation='duration-500'>
@@ -618,18 +632,20 @@ export default function ScenarioTwo() {
                             )}
                         </div>
 
-                        <div ref={networkRef} className="relative h-[60vh] border-2 border-dashed border-gray-300 rounded-lg h-80"></div>
+                        <div ref={networkRef} className="relative h-[65vh] border-2 border-dashed border-gray-300 rounded-lg h-80"></div>
 
                         <div className="flex justify-between items-center">
                             <div className="text-stone-600 flex">
                                 <div className='p-2 font-semibold'>
                                     {selectedNodes.length} node{selectedNodes.length !== 1 ? 's' : ''} selected
                                 </div>
-                                <Button onClick={resetSelection} color="gray"
-                                    className='ml-2 text-stone-600 border-stone-400 shadow-md 
+                                <Tooltip content='Reset Selection' style='light' placement='top' animation='duration-500'>
+                                    <Button onClick={resetSelection} color="gray"
+                                        className='ml-2 text-stone-600 border-stone-400 shadow-md 
             transform hover:scale-105 active:scale-100 transition duration-300'>
-                                    <IoArrowUndo />
-                                </Button>
+                                        <IoArrowUndo />
+                                    </Button>
+                                </Tooltip>
                             </div>
 
                             <div className="flex space-x-3">
@@ -665,7 +681,7 @@ export default function ScenarioTwo() {
                     <div className='flex flex-col gap-3'>
                         {/* Policy Configuration Panel */}
                         <Card className="w-full h-[65%] rounded-lg shadow-md">
-                            <h2 className="text-lg font-semibold text-center">Policies Configuration</h2>
+                            <h2 className="text-lg font-semibold text-center">Policies</h2>
                             <div>
                                 <p className="text-center text-sm font-semibold">Device : {selectedDevice || 'None'}</p>
                             </div>
@@ -804,17 +820,23 @@ export default function ScenarioTwo() {
                             </Button>
                         </Card>
 
-                        <Card className="w-full h-[30%] rounded-lg shadow-md">
+                        <Card className="w-full h-[60%] rounded-lg shadow-md">
                             {started ? (
                                 <>
                                     <div className="text-md font-bold text-center">
                                         Time Left: {timeRemaining} seconds
                                     </div>
                                     {/* Show Reset and Start Simulation when started is true */}
-                                    <Button onClick={handleResetSimulation} gradientMonochrome="teal"
+                                    <Button onClick={handleResetSimulation} gradientMonochrome="failure"
                                         className='text-stone-200 border-stone-400 shadow-md
-                transform hover:scale-105 active:scale-100 transition duration-300'>
-                                        Forfeit All
+                                        transform hover:scale-105 active:scale-100 transition duration-300'>
+                                        Reset Simulator
+                                    </Button>
+
+                                    <Button onClick={handleRunSimulation} gradientMonochrome="success"
+                                        className="text-stone-200 border-stone-400 shadow-md
+                                        transform hover:scale-105 active:scale-100 transition duration-300">
+                                        Check Results
                                     </Button>
                                 </>
                             ) : (
@@ -835,7 +857,7 @@ export default function ScenarioTwo() {
                         {isSimulationRunning && (
                             <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-50">
                                 <div className="w-1/3 bg-white p-4 rounded shadow-lg">
-                                    <p className="text-lg font-semibold text-center">Simulator Running...</p>
+                                    <p className="text-lg font-semibold text-center">Checking Results...</p>
                                     <div className="w-full h-full bg-gray-200 rounded mt-3">
                                         <div className="mt-2">
                                             <Progress
@@ -903,6 +925,26 @@ export default function ScenarioTwo() {
                                 }}
                                 className="rounded text-stone-600 mt-3"
                             />
+                            {/* Display policies */}
+                            {selectedDevice && (
+                                <div className="mt-5 text-left">
+                                    <h3 className="text-stone-600 font-bold mb-2 text-lg">Policies Applied</h3>
+                                    <ul className="list-disc list-inside">
+                                        {devicePolicies[selectedDevice].accessControl.map((policy, index) => (
+                                            <li key={index}>{policy}</li>
+                                        ))}
+                                        {devicePolicies[selectedDevice].qos.map((policy, index) => (
+                                            <li key={index}>{policy}</li>
+                                        ))}
+                                        {devicePolicies[selectedDevice].firewall.map((policy, index) => (
+                                            <li key={index}>{policy}</li>
+                                        ))}
+                                        {devicePolicies[selectedDevice].encryption.map((policy, index) => (
+                                            <li key={index}>{policy}</li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            )}
                         </div>
                         <div className="flex justify-end gap-4 mt-3">
                             <Button color="gray" className='text-stone-600 border-stone-400 shadow-md 
@@ -956,7 +998,7 @@ export default function ScenarioTwo() {
                     objOne="Build a Mesh network with 6 devices, consisting of 3 PCs, 2 Hubs, and 1 Router. Ensure each device can connect to all other devices."
                     objTwo="Enable VoIP communication, Allow Web Traffic but Limit Peer-To-Peer (P2P) traffic to prevent bandwidth congestion. APPLY FOR ALL DEVICES"
                     objThree="Enable Remote Desktop Access for the ROUTER and HUBS ONLY to allow network administrators to monitor the devices remotely."
-                    objFour="You have to complete the requirements of the scenario under 3 minutes & 30 seconds (210 seconds)"
+                    objFour="You have to complete the requirements of the scenario under 6 minutes (360 seconds)"
                     openModal={openScenarioModal}
                     setOpenModal={setOpenScenarioModal}
                 />
