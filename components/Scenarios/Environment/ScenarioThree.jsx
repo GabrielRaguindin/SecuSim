@@ -19,7 +19,7 @@ import Toast from '../../Toast/Toast';
 import Headbar from '@/components/Headbar';
 import BackButton from '../BackButton';
 
-export default function ScenarioTwo() {
+export default function ScenarioThree() {
 
     // Network Variables
     const networkRef = useRef(null);
