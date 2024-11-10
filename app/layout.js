@@ -13,7 +13,7 @@ const montserrat_init = Montserrat({
 
 export const metadata = {
   title: "SecuSim",
-  description: "Network Security Policy Simulator",
+  description: "SecuSim is a web-based Network Security Policy Simulator that provides virtual network simulation environment. This is a Capstone Project",
 };
 
 export default function RootLayout({ children }) {
@@ -22,7 +22,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        
+        <meta name="google-site-verification" content="CTMPkuJM7bVD9ksmGqRMhRaIyC1yuZSNxTlcnuzAuhs" />
       </head>
       <body className={montserrat_init.variable}>
         { isMobileDevice ? <MobileView /> :
